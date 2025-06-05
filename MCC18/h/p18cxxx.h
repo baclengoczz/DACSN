@@ -1,0 +1,334 @@
+#ifndef _P18CXXX_H
+#define _P18CXXX_H
+
+#if   defined(__18C658)
+  #include <p18c658.h>
+#elif defined(__18C858)
+  #include <p18c858.h>
+#elif defined(__18C601)
+  #include <p18c601.h>
+#elif defined(__18C801)
+  #include <p18c801.h>
+#elif defined(__18C242)
+  #include <p18c242.h>
+#elif defined(__18C252)
+  #include <p18c252.h>
+#elif defined(__18C442)
+  #include <p18c442.h>
+#elif defined(__18C452)
+  #include <p18c452.h>
+#elif defined(__18F242)
+  #include <p18f242.h>
+#elif defined(__18F248)
+  #include <p18f248.h>
+#elif defined(__18F252)
+  #include <p18f252.h>
+#elif defined(__18F258)
+  #include <p18f258.h>
+#elif defined(__18F442)
+  #include <p18f442.h>
+#elif defined(__18F448)
+  #include <p18f448.h>
+#elif defined(__18F452)
+  #include <p18f452.h>
+#elif defined(__18F458)
+  #include <p18f458.h>
+#elif defined(__18F1220)
+  #include <p18f1220.h>
+#elif defined(__18F1320)
+  #include <p18f1320.h>
+#elif defined(__18F2220)
+  #include <p18f2220.h>
+#elif defined(__18F2320)
+  #include <p18f2320.h>
+#elif defined(__18F2515)
+  #include <p18f2515.h>
+#elif defined(__18F2525)
+  #include <p18f2525.h>
+#elif defined(__18F2610)
+  #include <p18f2610.h>
+#elif defined(__18F2620)
+  #include <p18f2620.h>
+#elif defined(__18F4220)
+  #include <p18f4220.h>
+#elif defined(__18F4320)
+  #include <p18f4320.h>
+#elif defined(__18F4515)
+  #include <p18f4515.h>
+#elif defined(__18F4525)
+  #include <p18f4525.h>
+#elif defined(__18F4610)
+  #include <p18f4610.h>
+#elif defined(__18F4620)
+  #include <p18f4620.h>
+#elif defined(__18F6620)
+  #include <p18f6620.h>
+#elif defined(__18F6720)
+  #include <p18f6720.h>
+#elif defined(__18F8620)
+  #include <p18f8620.h>
+#elif defined(__18F8720)
+  #include <p18f8720.h>
+#elif defined(__18F2439)
+  #include <p18f2439.h>
+#elif defined(__18F4439)
+  #include <p18f4439.h>
+#elif defined(__18F2539)
+  #include <p18f2539.h>
+#elif defined(__18F4539)
+  #include <p18f4539.h>
+#elif defined(__18F8520)
+  #include <p18f8520.h>
+#elif defined(__18F6520)
+  #include <p18f6520.h>
+#elif defined(__18F8680)
+  #include <p18f8680.h>
+#elif defined(__18F6680)
+  #include <p18f6680.h>
+#elif defined(__18F8585)
+  #include <p18f8585.h>
+#elif defined(__18F6585)
+  #include <p18f6585.h>
+#elif defined(__18F8621)
+  #include <p18f8621.h>
+#elif defined(__18F6621)
+  #include <p18f6621.h>
+#elif defined(__18F8525)
+  #include <p18f8525.h>
+#elif defined(__18F6525)
+  #include <p18f6525.h>
+#elif defined(__18F2331)
+  #include <p18f2331.h>
+#elif defined(__18F2431)
+  #include <p18f2431.h>
+#elif defined(__18F4331)
+  #include <p18f4331.h>
+#elif defined(__18F4431)
+  #include <p18f4431.h>
+#elif defined(__18F6410)
+  #include <p18f6410.h>
+#elif defined(__18F6490)
+  #include <p18f6490.h>
+#elif defined(__18F8410)
+  #include <p18f8410.h>
+#elif defined(__18F8490)
+  #include <p18f8490.h>
+#elif defined(__18F2585)
+  #include <p18f2585.h>
+#elif defined(__18F2680)
+  #include <p18f2680.h>
+#elif defined(__18F4585)
+  #include <p18f4585.h>
+#elif defined(__18F4680)
+  #include <p18f4680.h>
+#elif defined(__18F2510)
+  #include <p18f2510.h>
+#elif defined(__18F2520)
+  #include <p18f2520.h>
+#elif defined(__18F4510)
+  #include <p18f4510.h>
+#elif defined(__18F4520)
+  #include <p18f4520.h>
+#elif defined(__18F2455)
+  #include <p18f2455.h>
+#elif defined(__18F2550)
+  #include <p18f2550.h>
+#elif defined(__18F4455)
+  #include <p18f4455.h>
+#elif defined(__18F4550)
+  #include <p18f4550.h>
+#elif defined(__18F6310)
+  #include <p18f6310.h>
+#elif defined(__18F6390)
+  #include <p18f6390.h>
+#elif defined(__18F8310)
+  #include <p18f8310.h>
+#elif defined(__18F8390)
+  #include <p18f8390.h>
+#elif defined(__18F6627)
+  #include <p18f6627.h>
+#elif defined(__18F6722)
+  #include <p18f6722.h>
+#elif defined(__18F8627)
+  #include <p18f8627.h>
+#elif defined(__18F8722)
+  #include <p18f8722.h>
+#elif defined(__18F65J10)
+  #include <p18f65j10.h>
+#elif defined(__18F65J15)
+  #include <p18f65j15.h>
+#elif defined(__18F66J10)
+  #include <p18f66j10.h>
+#elif defined(__18F66J15)
+  #include <p18f66j15.h>
+#elif defined(__18F67J10)
+  #include <p18f67j10.h>
+#elif defined(__18F85J10)
+  #include <p18f85j10.h>
+#elif defined(__18F85J15)
+  #include <p18f85j15.h>
+#elif defined(__18F86J10)
+  #include <p18f86j10.h>
+#elif defined(__18F86J15)
+  #include <p18f86j15.h>
+#elif defined(__18F87J10)
+  #include <p18f87j10.h>
+#elif defined(__18F2410)
+  #include <p18f2410.h>
+#elif defined(__18F2420)
+  #include <p18f2420.h>
+#elif defined(__18F4410)
+  #include <p18f4410.h>
+#elif defined(__18F4420)
+  #include <p18f4420.h>
+#elif defined(__18F2480)
+  #include <p18f2480.h>
+#elif defined(__18F2580)
+  #include <p18f2580.h>
+#elif defined(__18F4480)
+  #include <p18f4480.h>
+#elif defined(__18F4580)
+  #include <p18f4580.h>
+#elif defined(__18F6527)
+  #include <p18f6527.h>
+#elif defined(__18F6622)
+  #include <p18f6622.h>
+#elif defined(__18F8527)
+  #include <p18f8527.h>
+#elif defined(__18F8622)
+  #include <p18f8622.h>
+#elif defined(__18F24J10)
+  #include <p18f24j10.h>
+#elif defined(__18F25J10)
+  #include <p18f25j10.h>
+#elif defined(__18F44J10)
+  #include <p18f44j10.h>
+#elif defined(__18F45J10)
+  #include <p18f45j10.h>
+#elif defined(__18F4321)
+  #include <p18f4321.h>
+#elif defined(__18F4221)
+  #include <p18f4221.h>
+#elif defined(__18F2321)
+  #include <p18f2321.h>
+#elif defined(__18F2221)
+  #include <p18f2221.h>
+#elif defined(__18F97J60)
+  #include <p18f97j60.h>
+#elif defined(__18F96J65)
+  #include <p18f96j65.h>
+#elif defined(__18F96J60)
+  #include <p18f96j60.h>
+#elif defined(__18F87J60)
+  #include <p18f87j60.h>
+#elif defined(__18F86J65)
+  #include <p18f86j65.h>
+#elif defined(__18F86J60)
+  #include <p18f86j60.h>
+#elif defined(__18F67J60)
+  #include <p18f67j60.h>
+#elif defined(__18F66J65)
+  #include <p18f66j65.h>
+#elif defined(__18F66J60)
+  #include <p18f66j60.h>
+#elif defined(__18F1331)
+  #include <p18f1331.h>
+#elif defined(__18F1330)
+  #include <p18f1330.h>
+#elif defined(__18F1231)
+  #include <p18f1231.h>
+#elif defined(__18F1230)
+  #include <p18f1230.h>
+#elif defined(__18F4450)
+  #include <p18f4450.h>
+#elif defined(__18F2450)
+  #include <p18f2450.h>
+#elif defined(__18F4523)
+  #include <p18f4523.h>
+#elif defined(__18F4423)
+  #include <p18f4423.h>
+#elif defined(__18F2523)
+  #include <p18f2523.h>
+#elif defined(__18F2423)
+  #include <p18f2423.h>
+#elif defined(__18F85J90)
+  #include <p18f85j90.h>
+#elif defined(__18F84J90)
+  #include <p18f84j90.h>
+#elif defined(__18F83J90)
+  #include <p18f83j90.h>
+#elif defined(__18F65J90)
+  #include <p18f65j90.h>
+#elif defined(__18F64J90)
+  #include <p18f64j90.h>
+#elif defined(__18F63J90)
+  #include <p18f63j90.h>
+#elif defined(__18F45K20)
+  #include <p18f45k20.h>
+#elif defined(__18F25K20)
+  #include <p18f25k20.h>
+#elif defined(__18F4685)
+  #include <p18f4685.h>
+#elif defined(__18F2685)
+  #include <p18f2685.h>
+#elif defined(__18F85J11)
+  #include <p18f85j11.h>
+#elif defined(__18F84J11)
+  #include <p18f84j11.h>
+#elif defined(__18F83J11)
+  #include <p18f83j11.h>
+#elif defined(__18F65J11)
+  #include <p18f65j11.h>
+#elif defined(__18F64J11)
+  #include <p18f64j11.h>
+#elif defined(__18F63J11)
+  #include <p18f63j11.h>
+#elif defined(__18F4682)
+  #include <p18f4682.h>
+#elif defined(__18F2682)
+  #include <p18f2682.h>
+#elif defined(__18F87J50)
+  #include <p18f87j50.h>
+#elif defined(__18F86J55)
+  #include <p18f86j55.h>
+#elif defined(__18F86J50)
+  #include <p18f86j50.h>
+#elif defined(__18F85J50)
+  #include <p18f85j50.h>
+#elif defined(__18F67J50)
+  #include <p18f67j50.h>
+#elif defined(__18F66J55)
+  #include <p18f66j55.h>
+#elif defined(__18F66J50)
+  #include <p18f66j50.h>
+#elif defined(__18F65J50)
+  #include <p18f65j50.h>
+#elif defined(__18F87J11)
+  #include <p18f87j11.h>
+#elif defined(__18F86J16)
+  #include <p18f86j16.h>
+#elif defined(__18F86J11)
+  #include <p18f86j11.h>
+#elif defined(__18F67J11)
+  #include <p18f67j11.h>
+#elif defined(__18F66J16)
+  #include <p18f66j16.h>
+#elif defined(__18F66J11)
+  #include <p18f66j11.h>
+#elif defined(__18F44K20)
+  #include <p18f44k20.h>
+#elif defined(__18F24K20)
+  #include <p18f24k20.h>
+#elif defined(__18F4553)
+  #include <p18f4523.h>
+#elif defined(__18F4458)
+  #include <p18f4423.h>
+#elif defined(__18F2553)
+  #include <p18f2523.h>
+#elif defined(__18F2458)
+  #include <p18f2423.h>
+#else
+  #error  Unknown processor!
+#endif
+
+#endif /* _P18CXXX_H */

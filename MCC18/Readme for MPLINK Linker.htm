@@ -1,0 +1,525 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MPLINK Linker Release Notes</title>
+<style type="text/css">
+span {
+	font-family: Arial;
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+pre {
+	font-family: monospace;
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+p.Heading0, li.Heading0, div.Heading0, span.Heading0 {
+	font-size:14.0pt;
+	font-family:Arial;
+	font-weight:bold;
+}
+h1 {
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.3in;
+	text-indent:-.3in;
+	page-break-after:avoid;
+	tab-stops:list .3in;
+	font-size:14.0pt;
+	font-family:Arial;
+}
+h2 {
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.4in;
+	text-indent:-.4in;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	tab-stops:list .4in;
+	font-size:12.0pt;
+	font-family:Arial;
+}
+DL, DT, OL, UL, LI, DD {
+    list-style-position: outside;
+}
+pre {
+    font-family: monospace;
+}
+</style>
+</head>
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<span><div class=Heading0>Release Notes for MPLINK&trade; Object Linker and Utilities<br /></div>
+<TABLE COLS=2 BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TR><TD>MPLINK Object Linker</TD><TD>&nbsp;v4.10</TD></TR>
+<TR><TD>MPLIB&trade; Object Librarian</TD><TD>&nbsp;v4.10</TD></TR>
+<TR><TD>MP2COD COFF to COD File Converter</TD><TD>&nbsp;v4.10</TD></TR>
+<TR><TD>MP2HEX COFF to HEX File Converter</TD><TD>&nbsp;v4.10</TD></TR>
+</TABLE>
+26 January 2007<br />
+<br />
+<div class=Heading0>Table of Contents</div>
+<OL>
+<LI><A HREF="#Compatibility" TITLE="Jump to 'Important MPLINK and MPLAB IDE Compatibility Note' Section">Important MPLINK and MPLAB IDE Compatibility Note</A></LI>
+<LI><A HREF="#WhatsNew" TITLE="Jump to 'New in This Release' Section">New in This Release</A></LI>
+<LI><A HREF="#Devices" TITLE="Jump to 'Command Line Device Options Supported' Section">Command Line Device Options Supported</A></LI>
+<LI><A HREF="#OSSupport" TITLE="Jump to 'Operating System Support List' Section">Operating System Support List</A></LI>
+<LI><A HREF="#KnownProblems" TITLE="Jump to 'Known Problems' Section">Known Problems</A></LI>
+<LI><A HREF="#Support" TITLE="Jump to 'Customer Support' Section">Customer Support</A></LI>
+</OL>
+<OL style="list-style-type:decimal;">
+<LI class="Heading0"><h1><A NAME="Compatibility">Important MPLINK and MPLAB IDE Compatibility Note</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<p>Due to a change in COFF file format, MPLAB C18 v3.00 and later will
+not be compatible with versions of MPLINK prior to v4.00 or
+versions of the MPLAB IDE prior to v7.21.</p>
+<p>MPLINK v4.00 and later will have backward compatibility to earlier
+versions at the source level only. Any existing object files or
+libraries compiled with earlier versions of the tools will not link
+using new versions of the tools. They will need to be recompiled
+from source.</p>
+<p>If the user attempts to use this release with object files or
+libraries compiled with earlier versions of MPLAB C18, MPLINK, and
+MPASM, the error message that will be received will be similar to:</p>
+<pre>
+Error - Coff file format for 'C:\mcc18\lib/c018i.o' is out of date.
+</pre>
+<p>If the user attempts to use an old version of MPLINK to link object
+files or libraries compiled with this release, the error message that
+will be received will be similar to:
+<pre>
+Error - Coff file format for 'C:\mcc18\lib/c018i.o' does not appear to be a valid COFF file.
+</pre></p>
+</span>
+<LI class="Heading0"><h1><A NAME="WhatsNew">New in This Release</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<UL>
+<LI>Problems resolved between v4.06.04 and v4.10:<br /><br />
+<DL>
+<DT>(<b>22672</b>)<DD>If there was no place to allocate a zero-length section,
+the error message "cannot allocate section" would be emitted
+even though the section required no memory. Now the linker does not attempt to allocate zero-length sections.
+</DD></DT><br /><br />
+<DT>(<b>BIN18-57</b>)<DD>ICD2 linker scripts were changed for 16F616 and 16HV616 to minimize bank switching overhead.
+The data memory required was changed from 0x65-0x6F to 0xB5-0xBF.
+</DD></DT><br /><br />
+</DL>
+<LI>Modifications between v4.06.04 and v4.10:<br /><br />
+<DL>
+<DT>Support for MPLAB REAL ICE Instrumented Trace is provided.</DT><br /><br />
+<DT>A command line argument, <code>/strip-section</code>, has been added to the linker to allow the user to strip out unwanted empty sections that may automatically be added by the compiler (such as MATH_DATA) or the linker (such as “.cinit”).<br /><br />
+<code>mplink /strip-section &lt;section-name&gt; ...</code><br /><br />
+Using this feature to remove the “.cinit” section from objects with initialized data
+can result in unpredictable behavior. In the case of programs with no initialized data,
+this feature can be used as workaround for
+SSR <A HREF="#KnownProblems" TITLE="Jump to 'Known Problems' Section">3224</A> to eliminate the extra 2 bytes used for the length of initialized data.
+</DT><br /><br />
+<DT>See early adopter part support added in the
+<A HREF="#Devices" TITLE="Jump to 'Command Line Device Options Supported' Section">Command Line Device Options</A> below.<br /><br />
+</DT></LI>
+</DL>
+<LI>Modification between v4.06 and v4.06.04:<br /><br />
+This revision of MPLINK Linker included slight modifications to provide beta support for
+Instrumented Trace using MPLAB IDE and MPLAB REAL ICE In-Circuit Emulator System.<br /><br />
+<LI>Problems resolved between v4.05 and v4.06:<br /><br />
+<DL>
+<DT>(<b>22612</b>)<DD>Combining a typedef name with a 'rom' type qualifier in a
+declaration would assign the incorrect type if 'rom' followed the
+typedef name.
+</DD></DT><br /><br />
+</DL>
+</LI>
+<LI>No linker problems resolved between v4.04 and v4.05.<br /><br />
+<LI>No linker problems resolved between v4.03 and v4.04.<br /><br />
+<LI>Problems resolved between v4.02 and v4.03:<br /><br />
+<DL>
+<DT>(<b>25839</b>)<DD>Linker scripts written for use with MPASM and those written for use with MPLAB C18
+have the same names, based on the device or family of devices which they support.<br />
+To help identify which linker scripts should not be used with MPLAB C18, the linker scripts for use with MPASM projects contain the following comment:<pre>
+Not intended for use with MPLAB C18. For C18 projects, use the linker scripts
+provided with that product.</pre>
+</DD></DT>
+</DL></LI>
+<LI>Problems resolved between v4.01 and v4.02:<br /><br />
+<DL>
+<DT>(<b>27261</b>)<DD>In 16F716.lkr, the definition of memory 'gpr0' overlapped
+memory 'gprnobnk'. gpr0 was defined as START=0x20 END=0x70.<br />
+The END address is now 0x6F instead.</DD></DT><br /><br />
+<DT>(<b>27423</b>)<DD>ICD2 linker scripts for the following devices were incorrect:<pre>
+  18f65j10
+  18f65j15
+  18f66j10
+  18f66j15
+  18f67j10
+  18f85j10
+  18f85j15
+  18f86j10
+  18f86j15
+  18f87j10</pre>
+The linker scripts showed code pages for ICD2 resources in
+program memory but for these devices the program memory is
+not used by the ICD2 debug executive.<br />
+RAM resources used by the ICD2 were also incorrect for
+the 18F86J15 linker script.</DD></DT><br /><br />
+<DT>(<b>27579</b>)<DD>Every linker script used CONFIG as a label for the .config
+section but CONFIG is now an MPASM directive. The label
+defined in the linker script could no longer be used to
+access the .config section.</DD></DT><br /><br />
+<DT>(<b>24706</b>)<DD>Wrong calculation of memory utilization. The values present
+in the table "Program memory usage" and in "Section Info"
+were wrong.<br />
+For example:
+<pre>
+rom unsigned char array[0x1fffD];
+</pre>
+This ROM variable should occupy <span style='font-family: monospace;'>1fffD</span> size in the ROM space,
+but the map file showed only <span style='font-family: monospace;'>fffD</span>.
+</DD></DT><br /><br />
+<DT>(<b>27970</b>)<DD>In ICD2 linker scripts for the 18F45J10 family of devices,
+the address range was outside the range of the device so
+debug resources were not included.</DD></DT>
+</DL></LI><br />
+<LI>Problems resolved between v4.00 and v4.01:<br /><br />
+<DL>
+<DT>(<b>27612</b>)<DD>18F4520 family device support changes needed to match data
+        sheet DS39631A.<br />
+        For 18F4420/18F2420 corrected eedata range. Changed from
+        0xF00000-0xF003FF to 0xF00000-0xF000FF.
+</DD></DT><br /><br />
+<DT>(<b>27628</b>)<DD>16F690 family device support change needed to match data
+        sheet DS41262A.<br />
+        Removed icd_inst, mfg_code and .device_id sections from
+        linker scripts to be consistent with other devices.
+</DD></DT><br /><br />
+<DT>(<b>27593</b>)<DD>Linker scripts for PIC18F6525, PIC18F6621, PIC18F8525,
+        PIC18F8621 needed to be updated. For ICD2 linker scripts,
+        the debug exec changed so dbgspr moved from bank 12 
+        to bank 14.
+</DD></DT><br /><br />
+<DT>(<b>27618</b>)<DD>18F87J10 family device support changes needed to match data
+        sheet DS39663A. For 18F86J15 ICD2 linker scripts, dbgspr was
+        incorrectly assigned to bank 7 but has been moved to bank 14.
+</DD></DT><br /><br />
+</DL></LI>
+<LI>Early adopter part support added between v4.05 and v4.06:<br />
+<pre>
+  12F609
+  18F24K20
+  18F44K20
+</pre>
+<LI>Early adopter part support added between v4.04 and v4.05:<br />
+<pre>
+  16F610
+</pre>
+<LI>Early adopter part support added between v4.03 and v4.04:<br />
+<pre>
+  12F615
+  18F87J50
+  18F86J50
+  18F85J50
+  18F67J50
+  18F66J50
+  18F65J50
+  18F86J55
+  18F66J55
+  18F87J11
+  18F86J11
+  18F67J11
+  18F66J11
+  18F86J16
+  18F66J16
+</pre>
+<LI>Early adopter part support added between v4.02 and v4.03:<br />
+<pre>
+  18F2682
+  18F4682
+  18F63J11
+  18F64J11
+  18F65J11
+  18F83J11
+  18F84J11
+  18F85J11
+</pre>
+<LI>Early adopter part support added between v4.01 and v4.02:<br />
+<pre>
+  18F25K20
+  18F2685
+  18F45K20
+  18F4685
+  18F63J90
+  18F64J90
+  18F65J90
+  18F83J90
+  18F84J90
+  18F85J90
+  16F631
+  16F677
+  16F883
+  16F884
+  16F886
+  16F887
+</pre>
+<LI>Early adopter part support added between v4.00 and v4.01:<br />
+<pre>
+  16F616
+  16HV616
+  16HV785
+</pre>
+</UL>
+</span>
+<LI class="Heading0"><h1><A NAME="Devices">Command Line Device Options Supported</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<pre>
+10F200       10F202       10F204       10F206
+10F220       10F222
+
+12C508       12C508A      12C509       12C509A
+12C671       12C672
+12CE518      12CE519      12CE673      12CE674
+12CR509A
+12F508       12F509       12F510       12F609
+12F615       12F629       12F635       12F675
+12F683
+12HV609*     12HV615*
+
+14000
+
+16C432       16C433       16C505       16C52
+16C54        16C54A       16C54B       16C54C
+16C55        16C554       16C557       16C558
+16C55A       16C56        16C56A       16C57
+16C57C       16C58A       16C58B
+16C5X
+16C61        16C62        16C620       16C620A
+16C621       16C621A      16C622       16C622A
+16C62A       16C62B       16C63        16C63A
+16C64        16C642       16C64A       16C65
+16C65A       16C65B       16C66        16C662
+16C67        16C71        16C710       16C711
+16C712       16C715       16C716       16C717
+16C72        16C72A       16C73        16C73A
+16C73B       16C74        16C745       16C747
+16C74A       16C74B       16C76        16C765
+16C77        16C770       16C771       16C773
+16C774       16C781       16C782       16C84
+16C923       16C924       16C925       16C926
+16CE623      16CE624      16CE625
+16CR54       16CR54A      16CR54B      16CR54C
+16CR56A      16CR57A      16CR57B      16CR57C
+16CR58A      16CR58B      16CR62       16CR620A
+16CR63       16CR64       16CR65       16CR72
+16CR83       16CR84
+16CXX
+16F505       16F506       16F54        16F57
+16F59        16F610       16F616       16F627
+16F627A      16F628       16F628A      16F630
+16F631       16F636       16F639       16F648A
+16F676       16F677       16F684       16F685
+16F687       16F688       16F689       16F690
+16F716       16F72        16F722*      16F723*
+16F724*      16F726*      16F727*      16F73
+16F737       16F74        16F76        16F767
+16F77        16F777       16F785       16F818
+16F819       16F83        16F84        16F84A
+16F87        16F870       16F871       16F872
+16F873       16F873A      16F874       16F874A
+16F876       16F876A      16F877       16F877A
+16F88        16F882*      16F883       16F884
+16F886       16F887       16F913       16F914
+16F916       16F917       16F946
+
+16HV540      16HV610*      16HV616      16HV785
+
+17C42        17C42A       17C43        17C44
+17C752       17C756       17C756A      17C762
+17C766
+17CR42       17CR43
+17CXX
+
+18C242+      18C252+      18C442+      18C452+
+18C601+      18C658+      18C801+      18C858+
+
+18F1220+     18F1230      18F1231      18F1320+
+18F1330      18F1331      18F2220+     18F2221
+18F2320+     18F2321      18F2331+     18F2410+
+18F242+      18F2420+     18F2423      18F2431+
+18F2439+     18F2450      18F2455+     18F2458*
+18F248+      18F2480+     18F24J10+    18F24K20
+18F2510+     18F2515+     18F252+      18F2520+
+18F2523      18F2525+     18F2539+     18F2550+
+18F2553*     18F258+      18F2580+     18F2585+
+18F25J10+    18F25K20     18F2610+     18F2620+
+18F2680+     18F2682      18F2685      18F4220+
+18F4221      18F4320+     18F4321      18F4331+
+18F4410+     18F442+      18F4420+     18F4423
+18F4431+     18F4439+     18F4450      18F4455+
+18F4458*     18F448+      18F4480+     18F44J10+
+18F44K20     18F4510+     18F4515+     18F452+
+18F4520+     18F4523      18F4525+     18F4539+
+18F4550+     18F4553*     18F458+      18F4580+
+18F4585+     18F45J10+    18F45K20     18F4610+
+18F4620+     18F4680+     18F4682      18F4685
+18F6310+     18F6390+     18F63J11     18F63J90
+18F6410+     18F6490+     18F64J11     18F64J15
+18F64J90     18F6520+     18F6525+     18F6527+
+18F6585+     18F65J10+    18F65J11     18F65J15+
+18F65J50     18F65J90     18F6620+     18F6621+
+18F6622+     18F6627+     18F6680+     18F66J10+
+18F66J11     18F66J15+    18F66J16     18F66J50
+18F66J55     18F66J60     18F66J65     18F6720+
+18F6722+     18F67J10+    18F67J11     18F67J50
+18F67J60     18F8310+     18F8390+     18F83J11
+18F83J90     18F8410+     18F8490+     18F84J11
+18F84J15     18F84J90     18F8520+     18F8525+
+18F8527+     18F8585+     18F85J10+    18F85J11
+18F85J15+    18F85J50     18F85J90     18F8620+
+18F8621+     18F8622+     18F8627+     18F8680+
+18F86J10+    18F86J11     18F86J15+    18F86J16
+18F86J50     18F86J55     18F86J60     18F86J65
+18F8720+     18F8722+     18F87J10+    18F87J11
+18F87J50     18F87J60     18F96J60     18F96J65
+18F97J60
+
+EEPROM16     EEPROM8
+
+RF509AF      RF509AG      RF675F       RF675H
+RF675K
+</pre><p>
+*<b>Note</b>: Early adopter support has been added for these devices since last release</p><p>
++<b>Note</b>: These are the only PIC18 devices with peripheral library support.</p>
+<p>
+THE PARTS CORRESPONDING TO THESE OPTIONS MAY NOT ALL BE
+COMMERCIALLY AVAILABLE.</p>
+<p>
+The part selection is specified at assembly time and contained
+within the object file. An appropriate linker command file is
+necessary to properly link for the chosen part.
+</p>
+</span>
+<LI class="Heading0"><h1><A NAME="OSSupport">Operating System Support List</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<p>Windows XP and Windows 2000</p>
+</span>
+<LI class="Heading0"><h1><A NAME="KnownProblems">Known Problems in v4.06</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<DL>
+<DT>(<b>3224</b>)<DD>MPLINK Linker always links in the section which loads
+initialized data from program memory to data memory, even
+though it is not required.
+</DD></DT><br /><br />
+<DT>(<b>18214</b>)<DD>If MPLINK.EXE is invoked without arguments, an error message
+stating "Error spawning _mplink.exe" is emitted. This message
+is spurious; it can be ignored.
+</DD></DT><br /><br />
+<DT>(<b>18432</b>)<DD>An interrupt with locals of "overlay" storage class which calls
+a function reachable from main is incorrectly viewed as
+recursive.<br />
+For example, the program:
+<pre>
+        int g (void) {
+          return 2;
+        }
+
+        void f (void);
+        #pragma interrupt f
+        void f (void) {
+          overlay int x;
+          x = g ();
+        }
+
+        void main (void) {
+          int x;
+          x = g ();
+        }
+</pre>
+Will cause a linker error, stating that 'g' is recursive and
+has locals of "overlay" storage class. The workaround is to
+use "auto" instead of "overlay" in the interrupt.
+</DD></DT><br /><br />
+<DT>(<b>19225 / 24343</b>)<DD>MPLINK Linker may generate an assertion failure on
+programs which contain a section of zero length. The
+workaround is to remove such sections from the program.
+</DD></DT><br /><br />
+<DT>(<b>20403</b>)<DD>The '/r' option of MP2HEX does not work correctly for ranges
+specified outside of any existing data.<br />
+For example, given the following source, 't.asm':
+<pre>
+        LIST P=12C508
+        CODE 0x100
+        MOVLW 0
+        MOVLW 1
+        MOVLW 2
+        MOVLW 3
+        END
+</pre>
+After assembly, execute 'mp2hex.exe t.o /r 0x104-0x104'.
+The hex file content is:
+<pre>
+        :02 0000 04 0000FA
+        :02 0206 00 030C E7
+        :00 0000 01 FF
+</pre>
+The data record shows the instruction 'MOVLW 3' at address
+0x103, but 0x103 was not specified in the range.<br />
+Since no data exists at 0x104 in the COFF file, there should be
+no data bytes in the hex file.
+</DD></DT><br /><br />
+<DT>(<b>22228</b>)<DD>Quiet mode (/q) disables the printing of errors and warnings to
+standard out.
+</DD></DT><br /><br />
+<DT>(<b>22947</b>)<DD>The /? command-line option may give the following error message
+on Windows 2000:
+<pre>
+        Error - unknown switch: /r
+</pre>
+Use the /h option instead.
+</DD></DT><br /><br />
+<DT>(<b>27314</b>)<DD>Program memory utilization is not correct in map files
+generated for 18F87J10.
+</DD></DT><br /><br />
+<DT>(<b>28114</b>)<DD>The linker may disregard the section information in the last IDATA due to CONFIG syntax directives.
+</DD></DT><br /><br />
+<DT>(<b>22483</b>)<DD>MPLIB is unable to work with MPLAB C18 files compiled in the static overlay model.<br />
+For example, the source code:
+<pre>
+        int add( int a, int b )
+        {
+           int c;
+       
+           c = a + b;
+           return c;
+        }
+</pre>
+can be compiled and archived with the commands:
+<pre>
+        mcc18 test.c -sco
+        mplib -c test.lib test.o
+</pre>
+However, attempting to list the files in the archive link the archive will result in the error:
+<pre>
+        Error - Coff file 'test.o' could not read string table.
+        Error - Could not build member 'test.o' in library file './test.lib'.
+</pre>
+</DD></DT>
+</DL>
+</span>
+<LI class="Heading0"><h1><A NAME="Support">Customer Support</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<br />
+Microchip provides online support via our home page at:<br />
+<A HREF="http://www.microchip.com">http://www.microchip.com</A><br />
+<br />
+Technical support is available through the web site at:<br />
+<A HREF="http://support.microchip.com">http://support.microchip.com</A><br />
+<br />
+A forum for discussion of Microchip products and tools is
+available at:<br />
+<A HREF="http://forum.microchip.com">http://forum.microchip.com</A><br />
+</span>
+</OL>
+</span>
+</body>
+</html>

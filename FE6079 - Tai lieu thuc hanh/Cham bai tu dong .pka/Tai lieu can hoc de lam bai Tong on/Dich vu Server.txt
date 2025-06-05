@@ -1,0 +1,9 @@
+Mục tiêu: các bạn cấu hình được dịch vụ cho các Server trên Packet Tracer, gồm: DHCP, DNS, Web Server, Email.
+
+Các bạn có thể tham khảo 1 số link dưới đây:
+https://www.geeksforgeeks.org/configuring-dhcp-and-web-server-in-cisco-packet-tracer/
+https://www.youtube.com/watch?v=G-kFr0Kp-zU&ab_channel=SwatiTripathi
+https://www.youtube.com/watch?v=t_igEO-vN7g&ab_channel=M%E1%BA%A1ngtruy%E1%BB%81nth%C3%B4ngIT
+https://www.youtube.com/watch?v=D0N1EMQe9SA&t=217s&ab_channel=ProgrammingWorld
+https://www.youtube.com/watch?v=Pv7Oo6eqNRo&ab_channel=%C4%90%E1%BB%97Ng%E1%BB%8DcTu%E1%BA%A5n
+

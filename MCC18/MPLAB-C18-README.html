@@ -1,0 +1,2026 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MPLAB C18 Compiler Release Notes</title>
+<style type="text/css">
+span {
+	font-family: Arial;
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+pre {
+	font-family: monospace;
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+p.Heading0, li.Heading0, div.Heading0, span.Heading0 {
+	font-size:14.0pt;
+	font-family:Arial;
+	font-weight:bold;
+}
+h1 {
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.3in;
+	text-indent:-.3in;
+	page-break-after:avoid;
+	tab-stops:list .3in;
+	font-size:14.0pt;
+	font-family:Arial;
+}
+h2 {
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.4in;
+	text-indent:-.4in;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	tab-stops:list .4in;
+	font-size:12.0pt;
+	font-family:Arial;
+}
+DL, DT, OL, UL, LI, DD {
+    list-style-position: outside;
+}
+pre {
+    font-family: monospace;
+}
+code {
+    font-family: monospace;
+}
+</style>
+</head>
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<span><div class=Heading0>Release Notes for MPLAB&reg; C18 C Compiler<br /></div>
+v3.10<br />
+16 February 2007<br />
+<br />
+<div class=Heading0>Table of Contents</div>
+<OL>
+<LI><A HREF="#StudentEdition" TITLE="Jump to 'How the Student Edition Differs from the Full Version' Section">How the Student Edition Differs from the Full Version</A></LI>
+<LI><A HREF="#Compatibility" TITLE="Jump to 'Important Backward Compatibility Notes' Section">Important Backward Compatibility Notes</A></LI>
+<LI><A HREF="#WhatsNew" TITLE="Jump to 'What&apos;s New in This Release' Section">What's New in This Release</A></LI>
+<LI><A HREF="#Fixed" TITLE="Jump to 'What&apos;s Been Fixed Since v3.00' Section">What's Been Fixed Since v3.00</A></LI>
+<LI><A HREF="#Devices" TITLE="Jump to 'Devices Supported' Section">Devices Supported</A></LI>
+<LI><A HREF="#Documentation" TITLE="Jump to 'MPLAB C18 C Compiler Documentation' Section">MPLAB C18 C Compiler Documentation</A></LI>
+<LI><A HREF="#TableA2" TITLE="Jump to 'Documentation Update' Section">Documentation Update</A></LI>
+<LI><A HREF="#Installation" TITLE="Jump to 'Installation' Section">Installation</A></LI>
+<LI><A HREF="#IDE" TITLE="Jump to 'Using MPLAB C18 with the MPLAB IDE' Section">Using MPLAB C18 with the MPLAB IDE</A></LI>
+<LI><A HREF="#KnownProblems" TITLE="Jump to 'Known Problems' Section">Known Problems</A></LI>
+<LI><A HREF="#Contributors" TITLE="Jump to 'Contributors' Section">Contributors</A></LI>
+<LI><A HREF="#Support" TITLE="Jump to 'Customer Support' Section">Customer Support</A></LI>
+</OL>
+<OL style="list-style-type:decimal;">
+<LI class="Heading0"><h1><A NAME="StudentEdition">How the Student Edition Differs from the Full Version</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>MPLAB C18 is available as either a Student Edition or a full version.
+This Read Me file is the same in both.</p>
+<p>For 60 days, the Student Edition of MPLAB C18 will function as the full
+version. After 60 days, the MPLAB C18 Student Edition differs from the
+full version in the following ways:
+<UL>
+<LI>Not all optimizations will be supported. Namely, procedural
+abstraction will not be supported.</LI>
+<LI>The PIC18 Extended mode (extended instruction set and indexed with
+literal offset addressing) will not be supported.</LI>
+</UL></p><p>
+To purchase a full version of the MPLAB C18 C compiler, please contact
+your local distributor or visit <A HREF="http://buy.microchip.com">http://buy.microchip.com</A>.
+</p>
+</span>
+<LI class="Heading0"><h1><A NAME="Compatibility">Important Backward Compatibility Notes</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<h2>MPLAB C18 Storage Qualifier Handling</h2>
+<p>The changes to fix SSR 22612 in MPLAB C18 v3.06 affect programs written without consideration of C language specifications
+regarding the syntactic use of <code>const</code>, <code>volatile</code>, <code>rom</code>, <code>ram</code>, <code>near</code>,
+and <code>far</code> qualifiers for user defined types using <code>typedef</code>.
+An error or a warning will be generated if the compiler detects such problems in code.</p>
+<p>For example in the following code:</p>
+<pre>
+typedef char * cPtr_t;
+cPtr_t rom rompc;
+rom char romc;
+void f(void)
+{
+  rompc = &romc;
+}
+</pre>
+<p>
+<code>rompc</code> should be <code>[rom pointer to ram char]</code> so MPLAB C18 v3.06 and later produce a warning indicating there is a qualifier mismatch in assignment.
+Please note that this program compiles with no warning in MPLAB C18 prior to this fix because in those versions, <code>rompc</code>
+was incorrectly qualified as <code>[ram pointer to rom char]</code>.
+Since <code>romc</code> was in rom there was no mismatch in type and qualification for this assignment in earlier versions of MPLAB C18.
+</p><p>
+The qualifiers <code>rom</code>, <code>ram</code>, <code>near</code>, and <code>far</code> are specific to MPLAB C18.
+While different from <code>const</code> and <code>volatile</code> from a semantic point of view, they are parsed in the same syntactic context, hence the above example is applicable to all qualifiers.
+(For more information on the syntax of using qualifiers please refer to your C programming language reference manual.
+For a description of <code>rom</code>, <code>ram</code>, <code>near</code>, and <code>far</code> qualifiers please refer
+to the "Storage Qualifiers" section of the MPLAB C18 C Compiler User's Guide.)
+</p>
+<h2>MPLINK and MPLAB IDE COFF File Format</h2>
+<p>Due to a change in COFF file format, MPLAB C18 v3.00 and later will
+not be compatible with versions of MPLINK prior to v4.00 or
+versions of the MPLAB IDE prior to v7.21.</p>
+<p>MPLAB C18 v3.00 and later will have backward compatibility to earlier
+versions at the source level only. Any existing object files or
+libraries compiled with earlier versions of the tools will not link
+using new versions of the tools. They will need to be recompiled
+from source.</p>
+<p>If the user attempts to use this release with object files or
+libraries compiled with earlier versions of MPLAB C18, MPLINK, and
+MPASM, the error message that will be received will be similar to:</p>
+<code>
+Error - Coff file format for 'C:\mcc18\lib/c018i.o' is out of date.
+</code>
+<p>If the user attempts to use an old version of MPLINK to link object
+files or libraries compiled with this release, the error message that
+will be received will be similar to:</p>
+<code>
+Error - Coff file format for 'C:\mcc18\lib/c018i.o' does not appear to be a valid COFF file.
+</code>
+</span>
+<LI class="Heading0"><h1><A NAME="WhatsNew">What's New in This Release</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<UL>
+<LI>Early adopter part support added. See <A HREF="#Devices" TITLE="Jump to 'Devices Supported' Section">"Devices Supported"</A> below.</LI>
+<br />
+<br />
+<LI>Several bug fixes. See <A HREF="#Fixed" TITLE="Jump to 'What&apos;s Been Fixed Since v3.00' Section">"What's Been Fixed Since v3.00"</A> below.</LI>
+<br />
+<br />
+<LI>Support for MPLAB REAL ICE Instrumented Trace is provided.</LI>
+</UL>
+</span>
+<LI class="Heading0"><h1><A NAME="Fixed">What's Been Fixed Since v3.00:</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<OL style="list-style-type:lower-alpha;font-weight:bold;"><br />
+<LI>Fixed between v3.06 and 3.10:
+<DL style="font-weight:normal;"><br />
+<DT>(<b>22771</b>)<DD>A legal redeclaration of an array could change the size of the array.</DD>
+<br />
+<br />
+</DT>
+<DT>(<b>18405</b>)<DD>Two global declarations using the same name could cause problems
+for the banking optimizer if the declarations were located in
+different banks. Now an error is generated when the same name is used to declare objects in different sections.</DD>
+<br />
+<br />
+</DT>
+<DT>(<b>C18-261</b>)<DD>Some registers and bits are were removed from support files for the 18F97J60 family of devices
+because they are reserved.<br />
+<br />
+LATECOL was removed from ESTAT.<br />
+NOBKOFF and BPEN were removed from MACON4.<br />
+MICON register was removed.<br />
+MACLCON2 register was removed.<br />
+MACLCON1 register was removed.<br />
+<br />
+</DD>
+</DT>
+<DT>(<b>C18-262</b>)<DD>Aliases were added to support files for 18F87J11 and 18F87J50 families of devices
+for some registers and bits.<br />
+<br />
+aliases CM1CON and CM2CON for registers CM1CON1 and CM2CON1.<br />
+alias CMSTAT for register CMSTATUS.<br />
+alias BAUDCON for register BAUDCON1.<br />
+aliases U2OD and U1OD for bits USART1OD and USART1OD of registerODCON2.<br />
+alias ADSHR for bit DEVCFG of register WDTCON.<br />
+<br />
+Also, the unimplemented bit PFRZ was removed from PMCONH for these devices.<br />
+<br />
+</DD>
+</DT>
+<DT>(<b>C18-263</b>)<DD>Aliases BAUDCON for register BAUDCON1 and
+RCREG for register RCREG1 were added to support files for the 18F87J10 family
+of devices. 
+<br />
+<br />
+</DD>
+</DT>
+<DT>(<b>C18-265</b>)<DD>The devices 18F2410 and 18F4410 were added to the USART.h header file.
+<br />
+<br />
+</DD>
+</DT>
+</DL>
+<LI>Fixed between v3.05 and 3.06:
+<DL style="font-weight:normal;"><br />
+<DT>(<b>22612</b>)<DD>Combining a typedef name with a 'rom' type qualifier in a
+declaration would assign the incorrect type if 'rom' followed the
+typedef name.
+</DD></DT><br /><br />
+<DT>(<b>28973</b>)<DD>Modifications were required in the support files for the 18F87J50 and 18F87J11 families.<br />
+The following modifications were made to bit names in these support files:<br /><br />
+PMDATA1L renamed PMDIN1L<br />
+PMDATA1H renamed PMDIN1H<br />
+PMDATA2L renamed PMDIN2L<br />
+PMDATA2H renamed PMDIN2H<br />
+ADCON1 renamed ADCON0<br />
+ADCON2 renamed ADCON1<br />
+PADCFGH renamed ANCON0<br />
+PADCFGL renamed ANCONH<br />
+VREGSLP renamed REGSLP (in WDTCON register)
+</DD></DT><br /><br />
+<DT>(<b>28979</b>)<DD>Setting for 2.0V BOR is removed from support files for 18F1320.
+</DD></DT><br /><br />
+<DT>(<b>29218</b>)<DD>The descriptions of WRTB and WRTC configuration bits in support files for 18F2455 and 18F4455 were swapped, but have been corrected.
+The WRTB affects the write protection of the boot block, and the WRTC affects the configuration registers.
+</DD></DT><br /><br />
+<DT>(<b>29219</b>)<DD>The descriptions of WRTB and WRTC configuration bits in 18F2455 and 18F4455
+were swapped in the MPLAB C18 Config Settings Addendum (DS51537 revision E).
+This document is now obsolete, and has been replaced with the help file, hlpPIC18ConfigSet.chm.
+The descriptions of these configuration bits in the help file in this release have been corrected.
+</DD></DT><br /><br />
+<DT>(<b>29261</b>)<DD>Support files for the 18F45K20 family of devices were changed to match the datasheet.<br />
+The following changes were made:<br />
+<br />
+Register PSTCON renamed PSTRCON<br />
+Added CKTXP (bit 4) and DTRXP (bit 5) to BAUDCTL<br />
+Changed IPR2 (bit 5) from CM2IP to C2IP<br />
+Changed IPR2 (bit 6) from CM1IP to C1IP<br />
+Changed PIR2 (bit 5) from CM2IF to C2IF<br />
+Changed PIR2 (bit 6) from CM1IF to C1IF<br />
+Changed PIE2 (bit 5) from CM2IE to C2IE<br />
+Changed PIE2 (bit 6) from CM1IE to C1IE<br />
+Added TUN5 (bit 5) to OSCTUNE<br />
+Added MSK0-MSK7 bits to SSPMSK register<br />
+Updated configuration setting descriptions to match datasheet
+</DD></DT><br /><br />
+<DT>(<b>29287</b>)<DD>In support files for 18F4550, 18F4455, 18F2550, 18F2455, 18F4450, and 18F2450, bit name FCMEM in CONFIG1H was
+changed to FCMEN to match the datasheet, DS39632C.
+</DD></DT><br /><br />
+</DL>
+<LI>Fixed between v3.04 and 3.05:
+<DL style="font-weight:normal;"><br />
+<DT>(<b>28977</b>)<DD>UFRMH bits 0-2 (FRM8 - FRM10) and UFRML bits 0-8 (FRM0 - FRM7) were added
+to device support files for the 18F4450 family of devices to match data sheet DS39760A.
+</DD></DT><br /><br />
+<DT>(<b>28978</b>)<DD>Device support files for the 18F85J90 family were modified to match data sheet DS39770A. The following changes were made:<br /><br />
+MEMCON register has been removed.<br />
+DISCARD bit in ADCON0 has been removed.<br />
+PSPIP bit in IPR1 register has been removed.<br />
+LATE bit in LATE register has been removed.<br />
+PSPIE bit in PIE1 register has been removed.<br />
+PSPIF bit in PIR1 register has been removed.<br />
+TRISE2 bit in TRISE register has been removed.<br />
+</DD></DT><br /><br />
+<DT>(<b>21905/27748</b>)<DD>Invocations of functions with return values larger than 32
+bits retrieved the return value in an interrupt unsafe manner.
+</DD></DT><br /><br />
+<DT>(<b>23715</b>)<DD>Enumeration value 127+1 extended to 0xFF80 instead of 0x0080.
+</DD></DT><br /><br />
+<DT>(<b>28489</b>)<DD>RE3 (PORTE) is not available as input on devices 18F2331/2431 and has been removed from header files.
+</DD></DT><br /><br />
+<DT>(<b>28600</b>)<DD>Some unimplemented GPR locations defined in header files for all 18F97J60 family devices have been removed.
+</DD></DT><br /><br />
+<DT>(<b>28696</b>)<DD>For 18F85J11, 18F84J11 and 18F83J11, the config
+directive for the External Memory Bus Configuration bits (MODE =) defined the bits in reverse order.<br />
+<b>Note: </b>The workaround recommended in the Read Me file for release v3.04 is no longer correct. Instead
+simply use the #pragma config directive as described in the Config Settings Help file.
+</DD></DT><br /><br />
+<DT>(<b>28789</b>)<DD>The RE3 bit of PORTE was missing in header files for the 18F2221 and 18F2321 devices.
+</DD></DT><br /><br />
+</DL>
+<LI>Fixed between v3.03 and 3.04:
+<DL style="font-weight:normal;"><br />
+<DT>(<b>28128</b>)<DD>Names of macros DLB_EPSILON and LDLB_EPSILON in float.h
+deviated from names of macros in ANSI specification, DBL_EPSILON and LDBL_EPSILON.
+</DD></DT><br /><br />
+<DT>(<b>28345</b>)<DD>(non-extended mode only) An invalid error message, "Could not resolve section reference MATH_DATA"
+was given when MATH_DATA section was saved by ISR but not used in the application.
+</DD></DT><br /><br />
+<DT>(<b>28184</b>)<DD>Values in an array at offsets greater than
+128 were accessed incorrectly.
+</DD></DT><br /><br />
+<DT>(<b>28368</b>)<DD>Definitions of PSP* bits were removed from the header files for 18F2220 and 18F2320.
+These bits are not implemented on these devices.
+</DD></DT><br /><br />
+<DT>(<b>28292</b>)<DD>INTEDG2 bit of INTCON2&lt;4&gt;, was missing from header files of 18F458 family devices.
+</DD></DT><br /><br />
+</DL>
+<br />
+<LI>Fixed between v3.02 and 3.03:
+<DL style="font-weight:normal;"><br />
+<DT>(<b>28214</b>)<DD>For the 18F4550 family,
+the following list of volatile SFRs were not treated as volatile in the device support files:<pre>
+  SPPCFG
+  SPPCON
+  SPPEPS
+  UCON
+  UADDR
+  UCFG
+  UEP0
+  UEP1
+  UEP2
+  UEP3
+  UEP4
+  UEP5
+  UEP6
+  UEP7
+  UEP8
+  UEP9
+  UEP10
+  UEP11
+  UEP12
+  UEP13
+  UEP14
+  UEP15
+</pre>
+Support files for the following devices were corrected:<br />
+18F2450, 18F2455, 18F2550, 18F4450, 18F4455, and 18F4550.<br />
+</DD></DT><br />
+<DT>(<b>27893</b>)<DD>Bits were missing in support files for devices 18F1330 and 18F1230 according to data sheet DS39758A.<br />
+SEVTEN (ADCON0&lt;7&gt;) and INTSRC (OSCTUNE&lt;7&gt;) have been added.<br />
+CVROE (CVRCON&lt;6&gt;) and FLTCON (FLTCONFIG) are unimplemented and were removed.<br />
+Correct bit names for DTCON have been added.<br />
+</DD></DT><br />
+<DT>(<b>27953</b>)</DT><DD>For 18F87J10, the config directive for the Processor Mode Selection (External Memory Bus
+Configuration) bits (MODE =) defined the bits in reverse order.<br />
+The bits are now defined in the correct order.<br />
+<b>NOTE:</b> The workaround recommended for this issue in a previous release, v3.02, is no longer valid.<br />
+When using the #pragma config directive,
+please follow the instructions in the PIC18 Config Settings Help file for Processor Mode Selection:<br /><br />
+<TABLE BORDER=0 COLS=3>
+<TR><TD>MM</TD><TD>instead of XM20</TD><TD>for MCU mode - External bus disabled</TD></TR>
+<TR><TD>XM12</TD><TD>instead of XM16</TD><TD>for Extended MCU mode, 12-bit Address mode</TD></TR>
+<TR><TD>XM16</TD><TD>instead of XM12</TD><TD>for Extended MCU mode, 16-bit Address mode</TD></TR>
+<TR><TD>XM20</TD><TD>instead of MM</TD><TD>for Extended MCU mode, 20-bit Address mode</TD></TR>
+</TABLE><br />
+The MPLAB IDE settings were always correct. Only the
+#pragma config directive settings were incorrect.
+</DD></DT><br /><br />
+<DT>(<b>28136</b>)<DD>The 18F4680 family support files did not match data sheet DS39625B.<br />
+<br />
+Configuration Word changes for 18F2585/2680/4584/4680:<br />
+------------------------------------------------------<br />
+OSC setting - ERC value has been removed. Use RC<br />
+OSC setting - ERC1 value has been removed. Use RC<br />
+FCMENB setting has been changed to FCMEN<br />
+IESOB setting has been changed to IESO<br />
+BOR setting has been changed to BOREN<br />
+BORV setting value 20 has been changed to 3<br />
+BORV setting value 27 has been changed to 2<br />
+BORV setting value 42 has been changed to 1<br />
+BORV setting value 45 has been changed to 0<br />
+<br />
+Additional Configuration Word changes for 18F2585/4585:<br />
+--------------------------------------------------------<br />
+CP3 setting has been removed<br />
+WRT3 setting has been removed<br />
+EBTR3 setting has been removed<br />
+<br />
+SFR changes for 18F2585/2680/4585/4680 .h files:<br />
+------------------------------------------------<br />
+CANSTAT bit 1 has been renamed from ICODE0 to ICODE1<br />
+CANSTAT bit 2 has been renamed from ICODE1 to ICODE2<br />
+CANSTAT bit 3 has been renamed from ICODE2 to ICODE3<br />
+<br />
+T3ECCP1 (on T3CON) was incorrectly defined as bit 5 but has been corrected to bit 6.
+</DD></DT><br /><br />
+<DT>(<b>26624</b>)<DD>In the header file for 18F8680 the FIFOWMIF bit was missing from PIR3.<br />
+</DD></DT><br />
+<DT>(<b>27988</b>)<DD>RE3 bit of PORTE was missing in 18F2431 and 18F2331 devices header files and INC files. It has been added.<br />
+</DD></DT><br />
+<DT>(<b>27157</b>)<DD>Some SFRs and bits were missing from the 18F2480\2580\4480\4580
+devices according to data sheet DS39637A.<br />
+The following updates have been made to device support files:<br />
+<br />
+Configuration Word changes for 18F2480/2580/4480/4580:<br />
+-----------------------------------------------------<br />
+OSC setting - ERC value has been removed. Use RC<br />
+OSC setting - ERC1 value has been removed. Use RC<br />
+FCMENB setting has been changed to FCMEN<br />
+IESOB setting has been changed to IESO<br />
+BOR setting has been changed to BOREN<br />
+BORV setting value 20 has been changed to 3<br />
+BORV setting value 27 has been changed to 2<br />
+BORV setting value 42 has been changed to 1<br />
+BORV setting value 45 has been changed to 0<br />
+<br />
+Additional Configuration Word changes for 18F4480:<br />
+--------------------------------------------------<br />
+CP2 and CP3 settings have been removed<br />
+WRT2 and WRT3 settings have been removed<br />
+EBTR2 and EBTR3 settings have been removed<br />
+<br />
+SFR changes for 18F2480/2580/4480/4580 .h files:<br />
+------------------------------------------------<br />
+T3ECCP1 (on T3CON) was incorrectly defined as bit 5 but has been corrected to bit 6<br />
+EXIDEN (on RXF1SIDL)was incorrectly defined as bit 1 but has been corrected to bit 3<br />
+EXIDE (on B1SIDL)was incorrectly defined as bit 1 but has been corrected to bit 3<br />
+<br />
+CANSTAT bit 1 has been renamed from ICODE0 to ICODE1<br />
+CANSTAT bit 2 has been renamed from ICODE1 to ICODE2<br />
+CANSTAT bit 3 has been renamed from ICODE2 to ICODE3<br />
+</DD></DT><br />
+<DT>(<b>21933</b>)<DD>Using the name of a structure variable instead of the
+structure tag in the return type of a function could generate a
+crash.</DD></DT><br /><br />
+<DT>(<b>27927</b>)<DD>The "pow" function generated a link time error if the default
+storage class was static.</DD></DT><br /><br />
+<DT>(<b>27943</b>)<DD>An array of struct as a member of of another struct
+would cause an invalid COFF file.</DD></DT><br /><br />
+</DL>
+<br />
+<LI style=>Fixed between v3.01 and 3.02:<br />
+<br />
+<DL style="font-weight:normal;">
+<DT>(<b>27624</b>)<DD>Using any of a set of symbols reserved for use by the compiler
+caused the compiler to emit a "type mismatch in redeclaration"
+error.
+The following symbols are no longer reserved for use by the
+compiler:<pre>
+  AEXP
+  BEXP
+  AARGB0
+  AARGB1
+  AARGB2
+  AARGB3
+  AARGB4
+  AARGB5
+  AARGB6
+  AARGB7
+  BARGB0
+  BARGB1
+  BARGB2
+  BARGB3
+  REMB0
+  REMB1
+  REMB2
+  REMB3
+  TEMP
+  TEMPB0
+  TEMPB1
+  TEMPB2
+  TEMPB3
+  FPFLAGS
+  FPFLAGSbits
+</pre>
+If you are using any of these names to refer to the math library's variables, these can now be accessed
+by prefixing the symbol name with two underscores (e.g., __FPFLAGS).<br/><br/></DD></DT>
+<DT>(<b>27800</b>)<DD>Auto context saving saved a symbol twice if the symbol was in
+the "save=" clause and auto context saving determined it
+needed to save the symbol.</DD></DT><br /><br />
+<DT>(<b>27884</b>)<DD>The header files for the 18F87J10 family of devices were
+missing SSPCON bits. Per DS39663B, SSP1CON2 bits 1 through 5
+and SSP2CON2 bits 1 through 5 (ADMSK1-ADMSK5) were added.</DD></DT><br /><br />
+<DT>(<b>27895</b>)<DD>Header files for 18F4450 and 18F2450 did not have support
+for EUSART. BAUDCON, SPBRGH, EECON1 and EECON2 registers
+have been added. Missing bit SENDB on TXSTA register was
+added.</DD></DT><br />
+</DL><br />
+<LI>Fixed between v3.00 and 3.01:<br />
+<br />
+<DL style="font-weight:normal;">
+<DT>(<b>24022</b>)<DD>Compiler crashes on pointer arithmetic using pointer to
+        incomplete tag (illegal code).
+</DD></DT><br /><br />
+<DT>(<b>24411</b>)<DD>Cannot use a comma-containing constant string as an argument
+        to a macro.
+</DD></DT><br /><br />
+<DT>(<b>24420</b>)<DD>atob() function, called with a string containing a negative
+        value, corrupts the software stack.
+</DD></DT><br /><br />
+<DT>(<b>26834</b>)<DD>(Extended-mode only) Struct assignment with pointer arithmetic
+        has been fixed.
+</DD></DT><br /><br />
+<DT>(<b>27682</b>)<DD>TABLAT could be corrupted by function epilogue code.
+</DD></DT><br /><br />
+<DT>(<b>27358 / 27515</b>)<DD>The #pragma config directive causes unimplemented bits
+        to become 0, but should be left a '1'.<br />
+Unimplemented/reserve bits are now included in the mask and default settings when the bit must be maintained set.
+<br />
+<br />Following are the devices and configuration words that were corrected:
+<pre>
+        18C442  CONFIG1H, CONFIG4L
+        18C452  CONFIG1H, CONFIG4L
+        18C658  CONFIG1H, CONFIG4L
+        18C858  CONFIG1H, CONFIG4L
+        18F242  CONFIG5L, CONFIG6L, CONFIG7L
+        18F442  CONFIG5L, CONFIG6L, CONFIG7L
+        18F6525 CONFIG3L, CONFIG5L, CONFIG6L, CONFIG7L
+        18F6621 CONFIG3L
+        18F8525 CONFIG5L, CONFIG6L, CONFIG7L
+        18F2220 CONFIG5L, CONFIG6L, CONFIG7L
+        18F4220 CONFIG5L, CONFIG6L, CONFIG7L
+        18F2439 CONFIG5L, CONFIG6L, CONFIG7L
+        18F4439 CONFIG5L, CONFIG6L, CONFIG7L
+        18F2525 CONFIG5L, CONFIG6L, CONFIG7L
+        18F4525 CONFIG5L, CONFIG6L, CONFIG7L
+        18F6520 CONFIG2L, CONFIG2H, CONFIG3L, CONFIG3H, CONFIG5L,
+                CONFIG6L, CONFIG7L
+        18F6620 CONFIG3L, CONFIG5L, CONFIG6L, CONFIG7L
+        18F6720 CONFIG3L
+        18F8520 CONFIG2L, CONFIG2H, CONFIG3H, CONFIG5L, CONFIG6L,
+                CONFIG7L
+        18F8620 CONFIG5L, CONFIG6L, CONFIG7L
+</pre>
+        18F2331 and 18F2431 had extra settings removed that are
+        unimplemented on these devices as follows:<br />
+        CONFIG5L - Removed settings for CP2 and CP3.<br />
+        CONFIG6L - Removed settings for WRT2 and WRT3.<br />
+        CONFIG7L - Removed settings for EBTR2 and EBTR3.<br />
+<br />
+        In addition, 18F2525, 18F2620, 18F4525 and 18F4620 had their
+        value names modified in CONFIG2L for the BORV setting to be
+        3 (for Minimum setting), 2, 1, and 0 (for Maximum setting).
+</DD></DT><br /><br />
+<DT>(<b>27518</b>)<DD>SWDTEN bit should be 0th bit, but the bit location is 7 on
+        18F4321 family devices. For all devices, changed SWDTEN on
+        SFR WDTCON from bit 7 to bit 0.
+</DD></DT><br /><br />
+<DT>(<b>27519</b>)<DD>18F4321 family device support changes needed to match the data
+        sheet DS39689A.<br />
+<br />
+        All devices:<br />
+        -----------<br />
+        Added SFR ECCP1DEL<br />
+        Added SFR HLVDCON<br />
+        Added missing bits 4 and 5 (TXCKP and RXDTP) to BAUDCON<br />
+        Added missing bits 6 and 7 (P1M0 and P1M1) to CCP1CON<br />
+        Added missing bit 2 (HLVDIP) to IPR2<br />
+        Added missing bit 2 (HLVDIE) to PIE2<br />
+        Added missing bit 2 (HLVDIF) to PIR2<br />
+        Added missing bits 0-4 (SP0, SP1, SP2, SP3, SP4) to STKPTR<br />
+        Added missing bits 1-5 (ADMSK1, ADMSK2, ADMSK3, ADMSK4, ADMSK5)
+            in SSPCON2<br />
+        Changed CONFIG1H FSCM to FCMEN<br />
+        Changed CONFIG2L BORV settings to 3 (Minimum setting), 2, 1,
+            and 0 (Maximum setting)<br />
+        Corrected CONFIG3H default settings<br />
+        Changed CONFIG3H LPT1OSC setting names from LOW and HIGH to
+            ON and OFF to be consistent with other devices<br />
+        Changed CONFIG3H PBAD to PBADEN<br />
+        Corrected CONFIG4L default settings<br />
+        Updated Configuration descriptions to match data sheet<br />
+<br />
+        18F2221/18F2321<br />
+        ---------------<br />
+        Removed ICPORT from CONFIG4L - unimplemented on these devices.
+</DD></DT><br /><br />
+<DT>(<b>27612</b>)<DD>18F4520 family device support changes needed to match the data
+        sheet DS39631A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Change CONFIG2L BORV settings to 3 (Minimum setting), 2, 1,
+            and 0 (Maximum setting)<br />
+<br />
+        18F4520<br />
+        -------<br />
+        Removed SFR EEADRH - unimplemented on this device<br />
+<br />
+        18F4420<br />
+        -------<br />
+        Removed SFR DEBUG - unimplemented on this device<br />
+        Removed - SFR TRISE bits TRISE7, TRISE6, TRISE5, TRISE4 - not
+            in data sheet<br />
+        Removed - SFR PORTB bits DAD5, DAD6, DAD7 - not in data sheet<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings for
+            unimplemented but maintained set bits<br />
+<br />
+        18F2520<br />
+        -------<br />
+        Added missing SFRs PWM1CON and ECCP1AS<br />
+        Removed SFR EEADRH<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+<br />
+        18F2420<br />
+        -------<br />
+        Removed SFR DEBUG - unimplemented on this device<br />
+        Added missing SFRs PWM1CON and ECCP1AS<br />
+        Removed - SFR PORTB bits DAD5, DAD6, DAD7 - not in data sheet<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings for
+                  unimplemented but maintained set bits
+</DD></DT><br /><br />
+<DT>(<b>27614</b>)<DD>18F4550 family device support changes needed to match the data
+        sheet DS39632B.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Corrected bit positions of TUN3 and TUN4 in OSCTUNE<br />
+        UFRMH and UFRML - Add bit names to these register<br />
+        Updated Configuration descriptions to match the data sheet<br />
+        In CONFIG2L, changed BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+<br />
+        18F4550<br />
+        -------<br />
+        Added bits to CCP1DEL and CCP1AS.<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+<br />
+        18F4455<br />
+        -------<br />
+        Added bits to CCP1DEL and CCP1AS<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+        Removed CP3 from CONFIG5L, WRT3 from CONFIG6L and EBTR3 from<br />
+            CONFIG7L - they are not available in this device<br />
+<br />
+        18F2550<br />
+        -------<br />
+        Added ECCP1AS and ECCP1DEL and their bits<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+        Removed ICPRT from CONFIG4L - it is not available in
+            this device<br />
+<br />
+        18F2455<br />
+        -------<br />
+        Added ECCP1AS and ECCP1DEL and their bits<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+        Removed ICPRT from CONFIG4L, CP3 from CONFIG5L, WRT3 from
+            CONFIG6L and EBTR3 from CONFIG7L - they are not available
+            in this device
+</DD></DT><br /><br />
+<DT>(<b>27615</b>)<DD>18F8410 family device support changes needed to match the data
+        sheet DS39635A.<br />
+<br />
+        18F6310, 18F6410, 18F8310 and 18F8410<br />
+        -------------------------------------<br />
+        Removed EEIP from SFR IPR2 - unimplemented in data sheet<br />
+        Removed EEIE from SFR PIE2 - unimplemented in data sheet<br />
+        Removed EEIF from SFR PIR2 - unimplemented in data sheet<br />
+        Removed TUN5 from SFR OSCTUNE - unimplemented in data sheet<br />
+<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Changed CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+        CONFIG3H - corrected default settings for unimplemented
+            but maintain set bits<br />
+<br />
+        18F6310 and 18F6410<br />
+        -------------------<br />
+        CONFIG3L is unimplemented but to keep the default values set
+            it has been added. No settings are available so it can
+            not be changed<br />
+        Changed CONFIG3H PORTTBE setting to PORTE<br />
+        CONFIG7L is unimplemented for these devices but to keep the
+            default values set it will remain but the EBTR setting
+            is removed
+</DD></DT><br /><br />
+<DT>(<b>27618</b>)<DD>18F87J10 family device support changes needed to match the data
+        sheet DS39663A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        STKPTR - added bits SP4, SP3, SP2, SP1, SP0<br />
+        INTCON2 - added bit INT3IP<br />
+        ADCON0 - added bit ADCAL<br />
+        CCP1CON - added bits P1M1, P1M0<br />
+        CCP2CON - added bits P2M1, P2M0<br />
+        CCP3CON - added bits P3M1, P3M0<br />
+        ECCP1AS - added bits PSS1AC0, PSS1AC1, ECCP1AS0, ECCP1AS1,
+            ECCP1AS2, ECCP1ASE<br />
+        EECON2 - added SFR<br />
+        EECON1 - added SFR and bits FREE, WRERR, WREN, WR<br />
+        OSCTUNE - corrected size of PLLEN<br />
+        BAUDCON1 - added bit RCIDL<br />
+        BAUDCON2 - added bit RCIDL<br />
+        ECCP1DEL - added bits P1DC0, P1DC1, P1DC2, P1DC3, P1DC4,
+        P1DC5, P1DC6, P1RSEN<br />
+        ECCP3AS - added bits PSS3AC0, PSS3AC1, ECCP3AS0, ECCP3AS1,
+            ECCP3AS2, ECCP3ASE<br />
+        ECCP3DEL - added bits P3DC0, P3DC1, P3DC2, P3DC3, P3DC4,
+            P3DC5, P3DC6, P3RSEN<br />
+        ECCP2AS - added bits PSS2AC0, PSS2AC1, ECCP2AS0, ECCP2AS1,
+            ECCP2AS2, ECCP2ASE<br />
+        ECCP3DEL - added bits P2DC0, P2DC1, P2DC2, P2DC3, P2DC4,
+            P2DC5, P2DC6, P2RSEN<br />
+        CONFIG1H - correct default settings<br />
+        Updated configuration descriptions to match data sheet<br />
+<br />
+        18F87J10/86J15/86J10/85J15/85J10<br />
+        --------------------------------<br />
+        ECCP1AS - added bits PSS1BD0, PSS1BD1<br />
+        PORTG - added bits RDPU, REPU, RJPU<br />
+<br />
+        18F67J10/66J15/66J10/65J15/65J10<br />
+        --------------------------------<br />
+        Removed MEMCON - unimplemented on these devices<br />
+        PORTG - added bits RDPU, REPU<br />
+        Added CONFIG3L with no settings to maintain default values<br />
+        CONFIG3H - correct default settings<br />
+<br />
+<DT>(<b>27621</b>)<DD>18F4610 family device support changes needed to match the data
+        sheet DS39636A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Change CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+<br />
+        18F4610<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+<br />
+        18F4515<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F4510<br />
+        -------<br />
+        CONFIG5H, CONFIG6H - corrected default settings<br />
+<br />
+        18F4410<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG5H, CONFIG6L, CONFIG6H, CONFIG7L - corrected
+            default settings<br />
+<br />
+        18F2610<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+<br />
+        18F2515<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F2510<br />
+        -------<br />
+        CONFIG5H, CONFIG6H - corrected default settings<br />
+<br />
+        18F2410<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG5H, CONFIG6L, CONFIG6H, CONFIG7L - corrected
+            default settings<br />
+<br />
+<DT>(<b>27622</b>)<DD>18F44J10 family device support changes needed to match the data
+        sheet DS39682A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated configuration descriptions<br />
+<br />
+        18F45J10/18F44J10<br />
+        -----------------<br />
+        Added bit 7 - P1M1 and bit 6 - P1M0 to CCP1CON<br />
+<br />
+<DT>(<b>27623</b>)<DD>18F8722 family device support changes needed to match the data
+        sheet DS39646B.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Change CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+<br />
+        18F6527<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F6622<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F6627<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTBE to PORTE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F6722<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTBE to PORTE<br />
+<br />
+        18F8527<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTBE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F8622<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTBE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F8627<br />
+        -------<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+<DT>(<b>27639</b>)<DD>18F8490 family device support changes needed to match the data
+        sheet DS39629B.<br />
+<br />
+        18F6390, 18F6490, 18F8390 and 18F8490<br />
+        -------------------------------------<br />
+        Removed EEIP from SFR IPR2 - unimplemented in data sheet<br />
+        Removed EEIE from SFR PIE2 - unimplemented in data sheet<br />
+        Removed EEIF from SFR PIR2 - unimplemented in data sheet<br />
+        Removed TUN5 from SFR OSCTUNE - unimplemented in data sheet<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Changed CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+        CONFIG3H - corrected default settings<br />
+        Removed CONFIG7L it is not implemented in these devices<br />
+<br />
+<DT>(<b>27736</b>)<DD>In previous releases, the MPLAB C18 installer could corrupt
+        the PATH environment variable, causing variables within the
+        PATH variable to not be expanded. Since the system variable
+        SystemRoot is often part of several important PATH entries,
+        many commands could not be found after this.<br />
+<br />
+<DT>(<b>27737</b>)<DD>Auto context saving was not saving locations when a TBLRD
+        instruction was generated. For example, a CALL instruction
+        followed by a MOVF where the 'd' bit was not set would
+        cause the location to not be saved.<br />
+<br />
+</DL>
+</OL>
+</span>
+<LI class="Heading0"><h1><A NAME="Devices">Devices Supported</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<br />The MPLAB C18 C compiler (MCC18.EXE) is an ANSI C compiler for the
+PIC18 family of PIC microcontrollers. It currently supports the
+following PIC MCUs:
+<pre>
+PIC18C242+      PIC18C252+      PIC18C442+      PIC18C452+
+PIC18C601+      PIC18C658+      PIC18C801+      PIC18C858+
+
+PIC18F1220+     PIC18F1230      PIC18F1231      PIC18F1320+
+PIC18F1330      PIC18F1331      PIC18F2220+     PIC18F2221
+PIC18F2320+     PIC18F2321      PIC18F2331+     PIC18F2410+
+PIC18F242+      PIC18F2420+     PIC18F2423      PIC18F2431+
+PIC18F2439+     PIC18F2450      PIC18F2455+     PIC18F2458*
+PIC18F248+      PIC18F2480+     PIC18F24J10+    PIC18F24K20
+PIC18F2510+     PIC18F2515+     PIC18F252+      PIC18F2520+
+PIC18F2523      PIC18F2525+     PIC18F2539+     PIC18F2550+
+PIC18F2553*     PIC18F258+      PIC18F2580+     PIC18F2585+
+PIC18F25J10+    PIC18F25K20     PIC18F2610+     PIC18F2620+
+PIC18F2680+     PIC18F2682      PIC18F2685      PIC18F4220+
+PIC18F4221      PIC18F4320+     PIC18F4321      PIC18F4331+
+PIC18F4410+     PIC18F442+      PIC18F4420+     PIC18F4423
+PIC18F4431+     PIC18F4439+     PIC18F4450      PIC18F4455+
+PIC18F4458*     PIC18F448+      PIC18F4480+     PIC18F44J10+
+PIC18F44K20     PIC18F4510+     PIC18F4515+     PIC18F452+
+PIC18F4520+     PIC18F4523      PIC18F4525+     PIC18F4539+
+PIC18F4550+     PIC18F4553*     PIC18F458+      PIC18F4580+
+PIC18F4585+     PIC18F45J10+    PIC18F45K20     PIC18F4610+
+PIC18F4620+     PIC18F4680+     PIC18F4682      PIC18F4685
+PIC18F6310+     PIC18F6390+     PIC18F63J11     PIC18F63J90
+PIC18F6410+     PIC18F6490+     PIC18F64J11     PIC18F64J15
+PIC18F64J90     PIC18F6520+     PIC18F6525+     PIC18F6527+
+PIC18F6585+     PIC18F65J10+    PIC18F65J11     PIC18F65J15+
+PIC18F65J50     PIC18F65J90     PIC18F6620+     PIC18F6621+
+PIC18F6622+     PIC18F6627+     PIC18F6680+     PIC18F66J10+
+PIC18F66J11     PIC18F66J15+    PIC18F66J16     PIC18F66J50
+PIC18F66J55     PIC18F66J60     PIC18F66J65     PIC18F6720+
+PIC18F6722+     PIC18F67J10+    PIC18F67J11     PIC18F67J50
+PIC18F67J60     PIC18F8310+     PIC18F8390+     PIC18F83J11
+PIC18F83J90     PIC18F8410+     PIC18F8490+     PIC18F84J11
+PIC18F84J15     PIC18F84J90     PIC18F8520+     PIC18F8525+
+PIC18F8527+     PIC18F8585+     PIC18F85J10+    PIC18F85J11
+PIC18F85J15+    PIC18F85J50     PIC18F85J90     PIC18F8620+
+PIC18F8621+     PIC18F8622+     PIC18F8627+     PIC18F8680+
+PIC18F86J10+    PIC18F86J11     PIC18F86J15+    PIC18F86J16
+PIC18F86J50     PIC18F86J55     PIC18F86J60     PIC18F86J65
+PIC18F8720+     PIC18F8722+     PIC18F87J10+    PIC18F87J11
+PIC18F87J50     PIC18F87J60     PIC18F96J60     PIC18F96J65
+PIC18F97J60
+</pre><p>
+*<b>Note</b>: Early adopter support has been added for these devices since last release</p><p>
++<b>Note</b>: These are the only PIC18 devices with peripheral library support.</p>
+<p>
+THE PARTS LISTED ABOVE MAY NOT ALL BE COMMERCIALLY AVAILABLE.</p>
+</span>
+<LI class="Heading0"><h1><A NAME="Documentation">MPLAB C18 C Compiler Documentation</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>The following document revisions are associated with this release:</p>
+<UL>
+<LI>MPLAB C18 C Compiler Getting Started (DS51295 revision F)</LI>
+<LI>MPLAB C18 C Compiler User's Guide (DS51288 revision J)</LI>
+<LI>MPLAB C18 C Compiler Libraries (DS51297 revision F)</LI>
+</UL><p>
+If the installation includes documentation, the files listed above are placed in the &lt;install_dir&gt;\doc directory.
+<p>
+The current documentation is available from our web site:
+<A HREF="http://www.microchip.com/c18">http://www.microchip.com/c18</A></p>
+<p>The following Help files are associated with this release and can be found in the &lt;install_dir&gt;\doc directory.:</p>
+<UL>
+<LI>PIC18 Configuration Settings Help (Updated January 10, 2006)</LI>
+<LI>COFF File Format Help (Updated January 10, 2006)</LI>
+<LI>MPLAB C18 C Compiler User's Guide Help (Updated January 10, 2006)</LI>
+</UL>
+</span>
+<LI class="Heading0"><h1><A NAME="TableA2">Documentation Update</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>The information in the COFF File Format Help file (Updated January 10, 2006) supercedes the information
+found in Appendix A, COFF File Format, Table A-2 of the document:<br />
+MPLAB C18 C Compiler User's Guide (DS51288 revision J)<br />
+<p>The information in the PIC18 Configuration Settings Help file (Updated January 10, 2006) supercedes the information
+found in the document:<br />
+PIC18 Configuration Settings Addendum (DS51537 revision F)<br />
+<LI class="Heading0"><h1><A NAME="Installation">Installation</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>MPLAB C18 requires the use of MPLINK&trade;, Microchip's object linker;
+MPLAB C18 v3.00 or later will require MPLINK v4.00 or later. The latest
+version of MPLINK is included with the installation.
+</p>
+<p>To verify correct installation of MPLAB C18, execute the batch file
+&lt;install_dir&gt;\example\an696\buildit.bat. If the compiler system
+has been installed correctly, the file 18motor.out will be created.
+</p>
+<p>When installing MPLAB C18, the setup program offers the user the
+ability to change several environment settings. The following
+options are provided:
+</p>
+<p><b>Environment Variables:</b>
+</p>
+<UL>
+<LI>Add MPLAB C18 to PATH environment variable<br />
+The directory of the compiler executables is added to the
+beginning of the current PATH environment variable.
+</LI>
+<LI>Add MPASM to PATH environment variable<br />
+The directory of the MPASM executable is added to the beginning
+of the current PATH environment variable.
+</LI>
+<LI>Add header file path to MCC_INCLUDE environment variable<br />
+The location of the header (.h) files is added to the beginning
+of the user's MCC_INCLUDE environment variable. MPLAB C18 uses
+this setting to search for header files.
+</LI>
+<LI>Modify PATH and MCC_INCLUDE variables for all users<br />
+The options listed above are applied to the machine environment
+variables instead of the user environment variables, so that
+they affect all users and not just the current user.<br />This option
+only appears if the user running the installer has administrative
+rights.
+</LI>
+</UL>
+<p><b>MPLAB IDE Configuration:</b><br />
+The options below only appear if the user has a version of MPLAB IDE installed.
+</p>
+<UL>
+<LI>Update MPLAB IDE to use this MPLAB C18<br />
+Configuration settings used by the MPLAB IDE to find MPLAB C18
+will be updated to indicate the location of this release.
+</LI>
+<LI>Update MPLAB IDE to use this MPLINK, MPLIB, and MPASM <br />
+Settings used by MPLAB IDE to find the MPLINK Linker, MPLIB
+Librarian, and MPASM Assembler will be updated to point to those
+in this release.
+</LI>
+<LI>Update MPLAB IDE Help with MPLAB C18 documentation <br />
+Documentation installed with MPLAB C18 will be made available from
+the Help menu of the MPLAB IDE.<br />
+This option only appears if documentation is being installed.
+</LI>
+<LI>Perform MPLAB IDE updates for all users<br />
+The changes to the MPLAB IDE configuration are applied to the
+machine registry instead of that of the current user, so that
+they affect all users and not just the current user.<br />
+This option
+only appears if the user running the installer has administrative
+rights.
+</UL><p>
+If MPLAB C18 is uninstalled, these changes to the IDE configuration
+will not be rolled back.
+</p>
+</span>
+<LI class="Heading0"><h1><A NAME="IDE">Using MPLAB C18 with the MPLAB IDE</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>
+See the document "MPLAB C18 C Compiler Getting Started Guide" for a
+step-by-step tutorial on using MPLAB C18 with the MPLAB IDE.</p>
+<p>
+The current documentation is available from our web site,
+<A HREF="http://www.microchip.com/c18">http://www.microchip.com/c18</A></p>
+<p>
+<b>NOTE</b>: MPLAB C18 v3.00 and later will not be compatible with versions
+of the MPLAB IDE prior to v7.21.
+</p>
+</span>
+<LI class="Heading0"><h1><A NAME="KnownProblems">Known Problems</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>
+The following are some of the known issues with MPLAB C18 v3.10.
+The first list presented, <A HREF="#SSRSUMMARY" TITLE="Jump to SSR Summary">SSR SUMMARY</A>, is a brief summary of each SSR,
+System Service Request, for ease of reference. For more details on
+an SSR, see that SSR in the list <A HREF="#SSRDETAILS" TITLE="Jump to SSR Details">SSR DETAILS</A> which follows.
+</p>
+<h2><u><A NAME="SSRSUMMARY">SSR SUMMARY</A></u></h2>
+<h2>General</h2><br />
+<DL>
+<DT>(<A HREF="#SSR29230" TITLE="Detailed description of SSR 29230"><b>29230</b></A>)</DT><DD>The "exclusive or" assignment operator may not work correctly in expressions where the compiler cannot determine the bit field address during compile.
+<DT>(<A HREF="#SSR29304" TITLE="Detailed description of SSR 29304"><b>29304</b></A>)</DT><DD>Variables declared with volatile or const qualifiers suppress any qualifier mismatch warnings.
+<DT>(<A HREF="#SSR28372" TITLE="Detailed description of SSR 28372"><b>28372</b></A>)</DT><DD>The strchrpgm() function may not return a value.
+<DT>(<A HREF="#SSR27011" TITLE="Detailed description of SSR 27011"><b>27011</b></A>)</DT><DD>No error message generated for run time assignment to a
+const struct.
+<DT>(<A HREF="#SSR27683" TITLE="Detailed description of SSR 27683"><b>27683</b></A>)</DT><DD>#pragma sectiontype does not throw an error on inappropriate
+arguments and does not create the named section.
+<DT>(<A HREF="#SSR23897" TITLE="Detailed description of SSR 23897"><b>23897</b></A>)</DT><DD>integer *= float-constant casts constant to integer before
+multiplication.
+<DT>(<A HREF="#SSR24130" TITLE="Detailed description of SSR 24130"><b>24130</b></A>)</DT><DD>A conflicting redefinition of type does not cause error or
+warning.
+<DT>(<A HREF="#SSR24481" TITLE="Detailed description of SSR 24481"><b>24481</b></A>)</DT><DD>Due to a COFF limitation, a greater than 16-bit relocation
+offset is calculated incorrectly at link-time.
+<DT>(<A HREF="#SSR25512" TITLE="Detailed description of SSR 25512"><b>25512</b></A>)</DT><DD>Mismatch in config values for BORV across many device families.
+<DT>(<A HREF="#SSR20189" TITLE="Detailed description of SSR 20189"><b>20189</b></A>)</DT><DD>(non-extended mode only) Passing a static parameter to a
+function pointer in a structure should generate an error
+message, but instead generates an internal compiler error.
+<DT>(<A HREF="#SSR20975" TITLE="Detailed description of SSR 20975"><b>20975</b></A>)</DT><DD>With integer promotions enabled, if the left operand of the
+&gt;&gt;= operator is negative, the result stored in the operand is
+incorrect.
+<DT>(<A HREF="#SSR21192" TITLE="Detailed description of SSR 21192"><b>21192</b></A>)</DT><DD>(non-extended mode only) The result of the %= operator where
+the left operand is a 24-bit or 32-bit rom variable is
+incorrect.
+<DT>(<A HREF="#SSR21261" TITLE="Detailed description of SSR 21261"><b>21261</b></A>)</DT><DD>(non-extended mode only) Calling a function pointer which has
+been converted from an object pointer generates an internal
+compiler error.
+<DT>(<A HREF="#SSR21693" TITLE="Detailed description of SSR 21693"><b>21693</b></A>)</DT><DD>Redefinitions of structure tags in nested scopes are not
+observed properly by MPLAB C18.
+<DT>(<A HREF="#SSR21634" TITLE="Detailed description of SSR 21634 / 23024"><b>21634 / 23024</b></A>)</DT><DD>The assignment of the address of an object in constant
+program memory to a pointer to non-constant data memory does
+not generate a diagnostic.</DD>
+<DT>(<A HREF="#SSR23183" TITLE="Detailed description of SSR 23183"><b>23183</b></A>)</DT><DD>When the conditional (?:) operator is used with operands which
+are greater than 32 bits in size, an "irreducible tree"
+internal error may be generated.</DD>
+<DT>(<A HREF="#SSR21349" TITLE="Detailed description of SSR 21349 / 23238"><b>21349 / 23238</b></A>)</DT><DD>Referencing a variable declared 'extern' with an
+initializer causes an internal failure.
+<DT>(<A HREF="#SSR18487" TITLE="Detailed description of SSR 18487"><b>18487</b></A>)</DT><DD>With the compound assignment operators, the usual type
+conversions which are to be performed on the operands are not
+done correctly when the left operand is 8 bits in size.
+<DT>(<A HREF="#SSR20359" TITLE="Detailed description of SSR 20359"><b>20359</b></A>)</DT><DD>There is a bug in the implementation of the scoping of typedef
+names.
+<DT>(<A HREF="#SSR22091" TITLE="Detailed description of SSR 22091"><b>22091</b></A>)</DT><DD>String literals are placed in program memory and so must be
+assigned to variables of type 'rom char *'. However,
+assigning one to a pointer to data memory does not generate
+a diagnostic.
+<DT>(<A HREF="#SSR22147" TITLE="Detailed description of SSR 22147"><b>22147</b></A>)</DT><DD>Octal constants which contain an '8' or '9' do not generate a
+diagnostic. Instead, the code compiles quietly, and the value
+used for the constant is indeterminate.
+<DT>(<A HREF="#SSR22768" TITLE="Detailed description of SSR 22768"><b>22768</b></A>)</DT><DD>The redeclaration of a structure tag should generate an error,
+but does not.
+<DT>(<A HREF="#SSR22784" TITLE="Detailed description of SSR 22784"><b>22784</b></A>)</DT><DD>A local variable declared 'rom' and 'extern' is disallowed
+when it should be permitted.
+<DT>(<A HREF="#SSR21514" TITLE="Detailed description of SSR 21514 / 22953"><b>21514 / 22953</b></A>)</DT><DD>(non-extended mode only) Using static parameters with a
+function which has a variable number of arguments is not
+supported, but does not generate a compile time error.
+<DT>(<A HREF="#SSR26056" TITLE="Detailed description of SSR 26056"><b>26056</b></A>)</DT><DD>Unable to reduce tree for:
+if (local char * &gt; parameter const rom far char * + constant)
+<DT>(<A HREF="#SSR27455" TITLE="Detailed description of SSR 27455"><b>27455</b></A>)</DT><DD>The volatile qualifier is not applied to struct members.
+<DT>(<A HREF="#SSR22483" TITLE="Detailed description of SSR 22483"><b>22483</b></A>)</DT><DD>MPLIB is unable to work with MPLAB C18 files
+compiled in the static overlay model.
+</DL>
+<h2>Inline Assembly</h2><br />
+<DL>
+<DT>(<A HREF="#SSR21443" TITLE="Detailed description of SSR 21443"><b>21443</b></A>)</DT><DD>Compiler crashes on invalid inline assembly code.
+<DT>(<A HREF="#SSR22557" TITLE="Detailed description of SSR 22557"><b>22557</b></A>)</DT><DD>In some cases, using a valid cast expression in inline
+assembly can cause a crash.
+<DT>(<A HREF="#SSR22170" TITLE="Detailed description of SSR 22170 / 22632"><b>22170 / 22632</b></A>)</DT><DD>Incorrect use of automatic local variables in inline
+assembly code does not generate a warning or error.
+<DT>(<A HREF="#SSR22559" TITLE="Detailed description of SSR 22559"><b>22559</b></A>)</DT><DD>Enumeration constants in expressions which are operands of
+inline assembly instructions can cause an internal error to be
+generated.
+</DL>
+<h2>Preprocessor</h2><br />
+<DL>
+<DT>(<A HREF="#SSR21817" TITLE="Detailed description of SSR 21817"><b>21817</b></A>)</DT><DD>Preprocessor merging operator should take precedence over
+the stringization operator
+<DT>(<A HREF="#SSR23817" TITLE="Detailed description of SSR 23817"><b>23817</b></A>)</DT><DD>The preprocessor performs macro replacement within the text
+of a #error directive.
+<DT>(<A HREF="#SSR23827" TITLE="Detailed description of SSR 23827"><b>23827</b></A>)</DT><DD>Crash (after error message) for #elif with no preceding #if
+<DT>(<A HREF="#SSR23717" TITLE="Detailed description of SSR 23717 / 23844"><b>23717 / 23844</b></A>)</DT><DD>Comments in a macro call may cause incorrect
+substitution or a syntax error.
+<DT>(<A HREF="#SSR24038" TITLE="Detailed description of SSR 24038"><b>24038</b></A>)</DT><DD>No error when #if does not have corresponding #endif
+and condition is true
+<DT>(<A HREF="#SSR25409" TITLE="Detailed description of SSR 25409"><b>25409</b></A>)</DT><DD>Preprocessor evaluates expressions in discarded lines of
+an #ifdef expression.
+<DT>(<A HREF="#SSR22522" TITLE="Detailed description of SSR 22522"><b>22522</b></A>)</DT><DD>The preprocessor may go into an infinite loop when expanding
+mutually recursive macros.
+<DT>(<A HREF="#SSR21252" TITLE="Detailed description of SSR 21252 / 25868"><b>21252 / 25868</b></A>)</DT><DD>A macro invocation spanning more than one logical
+source file line may throw off line number information or
+cause the preprocessor to not output a line number, causing
+debugging difficulty in the MPLAB IDE.
+<DT>(<A HREF="#SSR26031" TITLE="Detailed description of SSR 26031"><b>26031</b></A>)</DT><DD>The preprocessor performs macro replacement inside
+a #pragma directive.
+<DT>(<A HREF="#SSR26397" TITLE="Detailed description of SSR 26397"><b>26397</b></A>)</DT><DD>A constant string ending with \\" causes any following text
+on the line to be treated as part of the string.
+<DT>(<A HREF="#SSR26385" TITLE="Detailed description of SSR 26385"><b>26385</b></A>)</DT><DD>The preprocessor does not throw an error on finding "#elsif"
+<DT>(<A HREF="#SSR25733" TITLE="Detailed description of SSR 25733"><b>25733</b></A>)</DT><DD>Using absolute path in "#include" directive causes compiler
+to put invalid file path in COFF file and error messages
+<DT>(<A HREF="#SSR27540" TITLE="Detailed description of SSR 27540"><b>27540</b></A>)</DT><DD>A malformed expression in a #if preprocessor directive on
+the last line of a file with no terminating end of line
+character may cause the preprocessor to crash.
+<DT>(<A HREF="#SSR27541" TITLE="Detailed description of SSR 27541"><b>27541</b></A>)</DT><DD>#undef on the last line of a source file with no terminating
+end of line may cause the preprocessor to crash.
+<DT>(<A HREF="#SSR28101" TITLE="Detailed description of SSR 28101"><b>28101</b></A>)</DT><DD>Circular or recursive macro defnitions can cause the
+preprocessor to take up all available CPU cycles and hang for a long time before giving an error.
+</DL>
+<h2>Libraries</h2>
+<b>Note</b>: From the release of MPLAB C18 v2.42 onward, no support has been added to the peripheral libraries.<br /><br />
+<DL>
+<DT>(<A HREF="#SSR18624" TITLE="Detailed description of SSR 18624"><b>18624</b></A>)</DT><DD>The library routine 'atof' generates a result less precise
+than simply assigning a constant.
+<DT>(<A HREF="#SSR23497" TITLE="Detailed description of SSR 23497"><b>23497</b></A>)</DT><DD>Timer5, SPI, and I2C peripherals not implemented for
+18F2331, 18F2431, 18F4331, and 18F4431; nor is the enhanced
+facility (function baudUSART) implemented for these devices.
+<DT>(<A HREF="#SSR26882" TITLE="Detailed description of SSR 26882"><b>26882</b></A>)</DT><DD>Library c018iz.o does not zero bank 15 at startup.
+</DL>
+<h2>Header Files</h2><br />
+<DL>
+<DT>None.
+</DL>
+<h2>User Error Screening</h2><br />
+<DL>
+<DT>(<A HREF="#SSR26595" TITLE="Detailed description of SSR 26595"><b>26595</b></A>)</DT><DD>Utilizing an enumerated type for a bitfield does not issue
+an error diagnostic.
+</DL>
+<h2><u><A NAME="SSRDETAILS">SSR DETAILS</A></u></h2>
+<h2>General</h2><br />
+<DL>
+<DT>(<A NAME="SSR29230"><b>29230</b></A>)<br />
+The "exclusive or" assignment operator may not work correctly in expressions where the compiler cannot determine the bit field address during compile.<br />
+For example, for the code:<br />
+<pre>
+  struct {
+    unsigned b0:1;
+    unsigned b1:1;
+    unsigned b2:1;
+    unsigned b3:1;
+    unsigned b4:1;
+    unsigned b5:1;
+    unsigned b6:1;
+    unsigned b7:1;
+  }b[2];
+  
+  void main(void){
+    char a=1;
+    b[a].b1^=1;
+  }
+</pre>
+Executing this code, the value b[a].b1 should toggle each time through main, but the value does not change.<br />
+A workaround is to use the XOR operator explicitly.<br />
+In the above example, using:<br />
+<pre>
+    b[a].b1=b[a].b1^1;
+</pre>
+would work as desired.<br />
+<br />
+<DT>(<A NAME="SSR29304"><b>29304</b></A>)<br />
+Variables declared with volatile or const qualifiers suppress any qualifier mismatch warnings.<br />
+For example:<br />
+<pre>
+  typedef char * cPtr_t;
+  volatile cPtr_t rom rompc;
+  volatile rom char romc;
+  void f(void)
+  {
+    rompc = &romc; /*warning is supressed here*/
+  }
+</pre>
+In this code, romc is in rom but rompc points to ram so a qualifier mismatch exists.<br />
+<br />
+<DT>(<A NAME="SSR28372"><b>28372</b></A>)<br />
+The strchrpgm() function may not return a value.<br />
+In the example code below the strchrpgm() function does not return a value to the rptr variable.
+Running the code in a debugger/simulator, you can see that it executes properly in that it breaks
+after a match with TBLPTR containing the correct address. But it does not return the address to
+the rptr variable.<br />
+Built using " -Ou- -Ot- -Ob- -Op- -Or- -Od- -Opa-"<br />
+<pre>
+  #include &lt;string.h&gt;
+  
+  // global vars
+  #pragma romdata
+  const far rom char rarray[]="12345";
+  
+  #pragma udata
+  far rom char* rptr;
+  
+  // code
+  #pragma code
+  
+  void main()
+  {
+      Nop();
+      rptr = strchrpgm(rarray, 0x32);
+      Nop();
+     
+      for(;;)
+      {
+        // infinite loop
+      }
+  }
+</pre>
+<DT>(<A NAME="SSR27011"><b>27011</b></A>)<br />
+No error message generated for run time assignment to a const struct.<br />
+For example, the code:<br />
+<pre>
+  typedef struct 
+  { 
+          int b; 
+  } typeB; 
+  
+  const typeB objB; 
+  
+  void fB_type( ) 
+  { 
+          objB.b = 1;
+  }
+</pre>
+does not generate an error.<br />
+<br />
+<DT>(<A NAME="SSR27683"><b>27683</b></A>)<br />
+#pragma sectiontype does not throw an error on inappropriate
+arguments and does not create the named section.<br />
+For example, the code:<br />
+<pre>
+  #pragma romdata whatever =
+  const rom unsigned char = 0x71;
+  #pragma romdata
+</pre>
+does not generate an error and does not create a section named
+whatever.<br />
+<br />
+<DT>(<A NAME="SSR23897"><b>23897</b></A>)<br />
+integer *= float-constant casts constant to integer before
+multiplication.<br />
+For example:<br />
+<pre>
+  volatile unsigned char uc_test;
+  uc_test = 80;
+  uc_test *= 0.7; /* Expected: 56, Actual: 0*/
+</pre>
+A workaround to this is to write the last statement as:<br />
+<pre>
+  uc_test = uc_test * 0.7;
+</pre>
+<DT>(<A NAME="SSR24130"><b>24130</b></A>)<br />
+Conflicting redefinition of type does not cause error or warning.<br />
+For example:<br />
+<pre>
+  typedef unsigned short long foo;
+  typedef unsigned char foo;
+  typedef unsigned short foo;
+  typedef unsigned int foo;
+  typedef unsigned long foo;
+  typedef double foo;
+  typedef long double foo;
+  typedef struct
+  {
+    ...
+  } foo;
+  typedef union foo
+  {
+    ...
+  } foo;
+</pre>
+It should cause the compiler to emit errors such as:<br />
+<pre>
+  test.c:3: error: conflicting types for `foo'
+  test.c:2: error: previous declaration of `foo'
+</pre>
+<DT>(<A NAME="SSR24481"><b>24481</b></A>)<br />
+Due to a COFF limitation, a greater than 16-bit relocation
+offset is calculated incorrectly at link-time.<br />
+Microchip's Common Object File Format (COFF) contains a limitation
+in the relocation entry, which is the structure that implements the
+dynamics of relocation. In Microchip's COFF, the offset to add to the
+base address of the symbol is stored in the relocation entry. This
+differs from the System V relocation data in which the offset is
+stored in the location being relocated to. This difference is
+necessary because Microchip relocations are not restricted to just
+filling in an address + offset value into the data stream, but also
+to do simple code modifications. The limitation comes from the fact
+that this offset is defined as a short, which dictates that offsets
+may be no larger than 16-bit.<br />
+The following example shows the side effect of this limitation:<br />
+<pre>
+  #pragma romdata constscn=0x2000
+  rom const unsigned char var;
+  #pragma romdata
+
+  rom const unsigned char *varptr = &var + 0x8000;
+</pre>
+The above code gives the following relocation entries:<br />
+<pre>
+ Relocation: r_vaddr=0x00000000, r_symndx=2, r_offset=-32768, r_type=4
+ Relocation: r_vaddr=0x00000001, r_symndx=2, r_offset=-32768, r_type=3
+ Relocation: r_vaddr=0x00000002, r_symndx=2, r_offset=-32768, r_type=21
+</pre>
+Note that the r_offset field reflects an offset of -32k instead of +32k.<br />
+<br />
+A workaround is to use code for which the compiler will evaluate
+the offset at run-time.<br />
+For example:<br />
+<pre>
+  void foo( void )
+  {
+    varptr = &var;
+    varptr += 0x8000;
+  }
+</pre>
+<DT>(<A NAME="SSR25512"><b>25512</b></A>)<br />
+Mismatch in config values for BORV across many device families.<br />
+For example, on the data sheet for the PIC18F8410 family, the BORV
+values are 2.1, 2.8, 4.3, 4.6<br />
+But the equivalent values in the MPLAB C18 compiler are 25, 27, 42, 45.<br />
+<br />
+<DT>(<A NAME="SSR20189"><b>20189</b></A>) (non-extended mode only)<br />
+Passing a static parameter to a function pointer in a structure
+should generate an error message, but instead generates an internal
+compiler error.<br />
+For example:<br />
+<pre>
+  struct { void (*f) (static int x); } S;
+  void main (void) { S.f (1); }
+</pre>
+<DT>(<A NAME="SSR20975"><b>20975</b></A>)<br />
+With integer promotions enabled, if the left operand of the &gt;&gt;=
+operator is negative, the result stored in the operand is incorrect.
+<br />
+For example, 'x' should be end up with -1, but instead ends up with 1:<br />
+<pre>
+  signed char x;
+  x = 0x80;
+  x >>= 7; /* 'x' should be -1, but is 1 instead */
+</pre>
+The integer promotions are not performed on 'x'.<br />
+<br />
+<DT>(<A NAME="SSR21192"><b>21192</b></A>) (non-extended mode only)<br />
+The result of the %= operator where the left operand is a 24-bit or
+32-bit rom variable is incorrect. For example:<br />
+<pre>
+  rom short long x;
+  void main (void)
+  {
+    short long y;
+    x = 1025;
+    y = x %= 2; /* 'x' correctly receives 1, but 'y' does not */
+    ...
+</pre>
+<DT>(<A NAME="SSR21261"><b>21261</b></A>) (non-extended mode only)<br />
+Calling a function pointer which has been converted from an object
+pointer generates an internal compiler error. For example:<br />
+<pre>
+  unsigned long x[4];
+  void main (void) { ((void (*)(void))x)( ); }
+</pre>
+<DT>(<A NAME="SSR21693"><b>21693</b></A>)<br />
+Redefinitions of structure tags in nested scopes are not observed
+properly by MPLAB C18. For example:<br />
+<pre>
+  struct s { int x; } S;
+  void main (void)
+  {
+    struct s; /* this introduces a new type, hiding the previous */
+    struct s *Sp = &S; /* this is an incompatible assignment */
+    Sp->x++;  /* invalid access of an incomplete type */
+    ...
+</pre>
+The inner declaration of 'struct s' introduces a new (incomplete)
+type, which is different than the first 'struct s'. However, the
+above program compiles quietly. The structure tag is not redefined.<br />
+<br />
+<DT>(<A NAME="SSR21634"><b>21634 / 23024</b></A>)<br />
+The assignment of the address of an object in constant program memory
+to a pointer to non-constant data memory does not generate a
+diagnostic. For example:<br />
+<pre>
+  const rom char x;
+  char *p;
+  void main (void) { p = &x; ... }
+</pre>
+A diagnostic should be generated. The effect of referencing through
+'p' following the assignment is indeterminate.<br />
+<br />
+<DT>(<A NAME="SSR23183"><b>23183</b></A>)<br />
+When the conditional (?:) operator is used with operands which are
+greater than 32 bits in size, an "irreducible tree" internal error may
+be generated. For example:<br />
+<pre>
+  struct s
+  {
+    unsigned long x;
+    char y;
+  } S, T;
+
+  void main (void)
+  {
+    char b;
+    unsigned long z;
+
+    ...
+    z = (b ? S : T).x;
+    ...
+</pre>
+generates such an error. The workaround is to use an 'if' statement
+instead of the conditional operator.<br />
+<br />
+<DT>(<A NAME="SSR21349"><b>21349 / 23238</b></A>)<br />
+Referencing a variable declared 'extern' with an initializer causes an
+internal failure. For example:<br />
+<pre>
+  extern int x = 5;
+  void main (void) { x++; }
+</pre>
+generates an internal error. The workaround is to remove the 'extern'
+storage class specification or remove the initializer.<br />
+<br />
+<DT>(<A NAME="SSR18487"><b>18487</b></A>)<br />
+With the compound assignment operators, the usual type conversions
+which are to be performed on the operands are not done correctly when
+the left operand is 8 bits in size. This can cause problems in these
+instances:<br />
+<br />
+-- With integer promotions enabled, the compound assignment division
+operator may return incorrect results on 8-bit operands when the left
+operand is signed and the right is unsigned. The workaround is to
+replace:<br />
+<pre>
+  signed char x;
+  unsigned char y;
+  ...
+  x /= y;
+</pre>
+with:<br />
+<pre>
+  signed char x;
+  unsigned char y;
+  ...
+  x = x / y;
+</pre>
+-- The compound assignment remainder operator may return incorrect
+results when the right operand is greater than 8 bits in size. The
+workaround is to replace<br />
+<pre>
+  unsigned char x;
+  unsigned short y;
+  ...
+  x %= y;
+</pre>
+with:<br />
+<pre>
+  unsigned char x;
+  unsigned short y;
+  ...
+  x = x % y;
+</pre>
+<DT>(<A NAME="SSR20359"><b>20359</b></A>)<br />
+There is a bug in the implementation of the scoping of typedef names.<br />
+The following example generates a syntax error:<br />
+<pre>
+  void main (void)
+  {
+    typedef int X;
+    {
+      struct Y { int X; };
+      (X)3; /* this should refer to the typedef name,
+             * not the structure member */
+    }
+  }
+</pre>
+The textually intervening declaration of 'X' as a structure member
+causes the typedef declaration of 'X' to be lost.<br />
+<br />
+<DT>(<A NAME="SSR22091"><b>22091</b></A>)<br />
+String literals are placed in program memory and so must be assigned
+to variables of type 'rom char *'. However, assigning one to a
+pointer to data memory does not generate a diagnostic. For example:<br />
+<pre>
+  char *s = "hello world";
+</pre>
+Any references through 's' will result in indeterminate behavior.<br />
+<br />
+<DT>(<A NAME="SSR22147"><b>22147</b></A>)<br />
+Octal constants which contain an '8' or '9' do not generate a
+diagnostic. Instead, the code compiles quietly, and the value used
+for the constant is indeterminate.<br />
+<br />
+<DT>(<A NAME="SSR22768"><b>22768</b></A>)<br />
+The redeclaration of a structure tag should generate an error, but
+does not. For example:<br />
+<pre>
+  struct foo { int a; };
+  struct foo { char b; };
+
+  struct foo F;
+</pre>
+compiles quietly without error. The variable 'F' takes on the type of
+the second declaration.<br />
+<br />
+<DT>(<A NAME="SSR22784"><b>22784</b></A>)<br />
+A local variable declared 'rom' and 'extern' is disallowed when it
+should be permitted. The error messages generated incorrectly refer
+to the declaration as 'auto'. For example:<br />
+<pre>
+  void main (void) { extern rom int x; }
+
+  Error: local 'x' in program memory can not be 'auto'
+</pre>
+<br />
+<DT>(<A NAME="SSR21514"><b>21514 / 22953</b></A>) (non-extended mode only)<br />
+Using static parameters with a function which has a variable number of
+arguments is not supported, but does not generate a compile time
+error. Instead, a link time error is emitted which may not be
+comprehensible:<br />
+<pre>
+  Error - could not find definition of symbol '_foo:101' ...
+</pre>
+Such would be the error message if the function in question is called
+'foo'.<br />
+<br />
+<DT>(<A NAME="SSR26056"><b>26056</b></A>)<br />
+Unable to reduce tree for if (local char * &gt; parameter const rom
+far char * + constant)<br />
+<br />
+For both extended and non-extended modes, the following function:<br />
+<pre>
+  void foo(const rom far char * FullPath, char *Path, char *FileName)
+  {
+    char *NameStart;
+    char *s;
+  
+    if ((NameStart > FullPath + 1) && (*(Path - 1) == '\\'))
+      return;
+  }
+</pre>
+results in:<pre>
+  Fatal [100] - internal - unable to reduce tree
+</pre>
+The problem is caused by comparing the address of a pointer located
+on the stack (i.e. ram) with one located in rom. This is not a valid
+comparison and should result in an error.<br />
+<br />
+<DT>(<A NAME="SSR27455"><b>27455</b></A>)<br />
+The volatile qualifier is not applied to struct members.<br />
+For the following source code:<pre>
+  struct
+    {
+      unsigned char aaa;
+      volatile unsigned char bbb;
+    } flags;
+</pre>
+the volatile qualifier on the second member of the struct 'flags'
+is ignored.<br />
+<br />
+Workaround:<br />
+Apply the volatile qualifier to the entire struct.<br />
+<pre>
+  struct
+    {
+      unsigned char aaa;
+      volatile unsigned char bbb;
+    } volatile flags;
+</pre>
+<DT>(<A NAME="SSR22483"><b>22483</b></A>)<br />
+MPLIB is unable to work with MPLAB C18 files
+compiled in the static overlay model.<br />
+For example:<pre>
+  int add( int a, int b )
+  {
+    int c;
+    c = a + b;
+    return c;
+  }</pre>
+Compiled with:<pre>
+  mcc18 test.c -sco</pre>
+Then placed in an archive containing only this file:<pre>
+  mplib -c test.lib test.o</pre>
+MPLIB is unable to list the files in the archive.<pre>
+  mplib -t test.lib</pre>
+Gives the error:
+<pre>
+  Error - Coff file 'test.o' could not read string table.
+  Error - Could not build member 'test.o' in library file 'test.lib'.
+</pre>
+Trying to use such an archive with MPLINK also gives an error saying it could not read the string table.<br />
+<br />
+<br />
+</DL>
+<h2>Inline Assembly</h2><br />
+<DL>
+<DT>(<A NAME="SSR21443"><b>21443</b></A>)<br />
+Compiler crashes on invalid inline assembly code.<br />
+For example:<br />
+<pre>
+  void foo(unsigned short addr)
+  {
+    _asm
+    movff ((unsigned char *)&addr)+1,1
+    _endasm
+  }
+</pre>
+The workaround is to use valid inline assembly syntax:<br />
+<pre>
+  movff addr+1,1
+</pre>
+<DT>(<A NAME="SSR22557"><b>22557</b></A>)<br />
+In some cases, using a valid cast expression in inline assembly can
+cause a crash:<br />
+<pre>
+  void main (void)
+  {
+    static char x;
+    _asm
+      movff x, x + (unsigned char)1
+    _endasm
+  }
+</pre>
+The workaround is to remove the cast.<br />
+<br />
+<DT>(<A NAME="SSR22170"><b>22170 / 22632</b></A>)<br />
+Incorrect use of automatic local variables in inline assembly code
+does not generate a warning or error.<br />
+Automatic local variables, when used in inline assembly expressions,
+are given a value which is their offset from the frame pointer.<br />
+For example, the following code demonstrates the proper accessing
+of stack-based variable 'a' using its value in PLUSW2 addressing.<br />
+It then demonstrates improper accessing of stack variable 'b' by
+attempting to reference it using direct mode addressing.<br />
+<pre>
+  #include &lt;p18f452.h&gt;
+  
+  void assignlocals( void )
+  {
+    auto char a, b;
+  
+    _asm
+  
+    // correctly assigns TMR0L to variable 'a'
+    movlw a
+    movff TMR0L, PLUSW2
+  
+    // DOES NOT correctly assign TMR0L to variable 'b'
+    movff TMR0L, b
+  
+    _endasm
+  }
+</pre>
+The compiler should give an error (or at least a warning) on the use
+of variable 'b' in a direct mode addressing instruction, but it instead
+generates code as if the offset were an absolute address.<br />
+<br />
+<DT>(<A NAME="SSR22559"><b>22559</b></A>)<br />
+Enumeration constants in expressions which are operands of inline
+assembly instructions can cause an internal error to be generated.<br />
+The workaround is to use integer constants instead.<br />
+</DL>
+<h2>Preprocessor</h2><br />
+<DL>
+<DT>(<A NAME="SSR21817"><b>21817</b></A>)<br />
+Preprocessor merging operator should take precedence over
+the stringization operator.<br />
+For example:<pre>
+  #define STR(a) NXSTR(a)
+  #define NXSTR(a) #a
+
+  void
+  foo (void)
+  {
+    // Apply "merging" operator
+     #define CAT(a, b) NXCAT(a, b)
+     #define NXCAT(a, b) a ## b
+  
+    // The two tokens '1.' and 'E9' should be merged into a single token
+    // before the stringization operator is applied.
+     STR(CAT (1., E9));
+  }
+</pre>
+Preprocesses to:<br />
+<pre>
+  "CAT (1., E9)" ;
+</pre>
+but it should produce:<br />
+<pre>
+  "1.E9" ;
+</pre>
+<DT>(<A NAME="SSR23817"><b>23817</b></A>)<br />
+The preprocessor performs macro replacement within the text of
+a #error directive.<br />
+<br />
+Example source code:<pre>
+  #define FOSC 1800
+  #error "FOSC is 1800"
+</pre>
+Preprocessor command line:<pre>
+  cpp18 preproc-1.c
+</pre>
+Preprocessor output:<pre>
+  #line 1 "preproc-1.c"
+  #line 2 "preproc-1.c"
+  preproc-1.c:2: "1800 is 1800"
+</pre>
+<DT>(<A NAME="SSR23827"><b>23827</b></A>)<br />
+Crash (after error message) for #elif with no preceding #if
+For example:<pre>
+  ...
+  /* no #if here */
+  #elif defined (_FOO_)
+  #endif
+</pre>
+<DT>(<A NAME="SSR23717"><b>23717 / 23844</b></A>)<br />
+Comments in a macro call may cause incorrect substitution or
+a syntax error.<br />
+For example:<br />
+<pre>
+  #pragma romdata CONFIG
+  _CONFIG_DECL (_OSCS_OFF_1H & _OSC_HSPLL_1H, // comments
+  _PWRT_ON_2L & _BOR_OFF_2L & _BORV_42_2L,
+  // comments
+  0,
+  _CCP2MUX_OFF_3H,
+  ...
+</pre>
+Another example:<br />
+<br />
+A comment following the last argument in a macro invocation may cause
+a syntax error. For example:<br />
+<pre>
+  #include &lt;p18f8720.h&gt;
+  #pragma romdata CONFIG
+  _CONFIG_DECL
+      (_CONFIG1H_DEFAULT,
+       _CONFIG2L_DEFAULT,
+       _CONFIG2H_DEFAULT,
+       _CONFIG3L_DEFAULT,
+       _CONFIG3H_DEFAULT,
+       _CONFIG4L_DEFAULT,
+       _CONFIG5L_DEFAULT,
+       _CONFIG5H_DEFAULT,
+       _CONFIG6L_DEFAULT,
+       _CONFIG6H_DEFAULT,
+       _CONFIG7L_DEFAULT,
+       _CONFIG7H_DEFAULT //12
+      );
+  #pragma romdata
+</pre>
+The workaround is to not have comments inside a macro call.<br />
+<br />
+<DT>(<A NAME="SSR24038"><b>24038</b></A>)<br />
+No error is given when #if does not have corresponding #endif
+and the condition is true<br />
+For example:<br />
+This gives a syntax error:<br />
+<pre>
+  #if defined(x)
+  int y = x;
+</pre>
+But this does not:<br />
+<pre>
+  #define x 2
+  #if defined(x)
+  int y = x;
+</pre>
+Both should give syntax errors since the #endif is missing.<br />
+<br />
+<DT>(<A NAME="SSR25409"><b>25409</b></A>)<br />
+Preprocessor evaluates expressions in discarded lines of an #ifdef
+expression.<br />
+For example:<br />
+<pre>
+  #ifdef foo
+  #if 12/foo
+  #endif
+  #endif
+  ...
+</pre>
+Will generate a divide by zero error from the preprocessor, but should
+not since the expression shouldn't be evaluated.<br />
+<br />
+<DT>(<A NAME="SSR22522"><b>22522</b></A>)<br />
+The preprocessor may go into an infinite loop when expanding
+mutually recursive macros.<br />
+For example:<br />
+<pre>
+  #define x (4 + y)
+  #define y (2 * x)
+  void main (void) { y; }
+</pre>
+causes the preprocessor to run indefinitely.<br />
+<br />
+<DT>(<A NAME="SSR21252"><b>21252 / 25868</b></A>)<br />
+A macro invocation spanning more than one logical source file line may
+throw off line number information, or cause the preprocessor to not
+output a line number, causing debugging difficulty in the MPLAB IDE.<br />
+For example:<br />
+<pre>
+  void main (void)
+  {
+    int x;
+
+    f (arg1,
+       arg2,
+       arg3); // macro call
+    ...
+    x++;      // breakpoint may not function correctly here
+    ...
+</pre>
+A breakpoint set on a line following such a macro call may not work
+correctly. MPLAB IDE may state that such a breakpoint cannot be set.<br />
+Additionally, stepping through the source code may not follow the
+expected sequence of execution. The workaround is to use the line
+splice character after each macro argument:<br />
+<pre>
+  void main (void)
+  {
+    int x;
+
+    f (arg1,\
+       arg2,\
+       arg3);
+    ...
+    x++;
+</pre>
+<DT>(<A NAME="SSR26031"><b>26031</b></A>)<br />
+The preprocessor performs macro replacement inside a #pragma directive.<br />
+Macro replacement is performed inside any #pragma directive.<br />
+<br />
+The following code results in<pre>
+  Error [1225] configuration value '0' not recognized for configuration setting 'WDT'
+</pre><pre>
+  #define OFF 0
+  #define ON 1
+
+  #pragma config WDT = OFF
+  ....
+</pre>
+<DL><DT>Workarounds:</DT>
+<DD>1) Move #pragma config to a separate .c source file with no #define or #include directives.</DD>
+<DD>2) Move #pragma config prior to any #define or #include directives.</DD></DL>
+<br />
+<DT>(<A NAME="SSR26397"><b>26397</b></A>)<br />
+A constant string ending with \\" causes any following text
+on the line to be treated as part of the string<br />
+The following code:<pre>
+  char test[]="\\"; // "string"</pre>
+preprocessed with:<pre>
+  mcc18 preproc.c -e</pre>
+results in:<pre>
+  #line 1 "preproc.c"
+   char test[]="\\"; // "string"</pre>
+Notice that the preprocessor does not remove the comment.<br />
+<br />
+<DT>(<A NAME="SSR26385"><b>26385</b></A>)<br />
+The preprocessor does not throw an error on finding "#elsif"<br />
+The following code:<pre>
+  #define _BAR_
+
+  #if defined(_FOO_)
+    #error "_FOO_ defined"
+  #elsif defined(_BAR_)
+    #error "_BAR_ defined"
+  #else
+    #error "Neither defined"
+  #endif</pre>
+will print "Neither defined" since "#elsif" is not a valid
+preprocessor directive. Although it should be "#elif" no error
+or warning is given about the typo.<br />
+<br />
+<DT>(<A NAME="SSR25733"><b>25733</b></A>)<br />
+Using the absolute path in a "#include" directive causes the compiler
+to use an invalid filepath in the COFF file and error messages.<br />
+Example source file:<br />
+<pre>
+  #include "c:\test\c18\include\header.h"
+  void main (void)
+  {}
+</pre>
+compiled with --<pre>
+  c:\test\c18\include>mcc18 includepath.c
+</pre>
+causes the following path in the COFF file --<pre>
+  C:\test\c18\include\c:\test\c18\include\header.h</pre>
+The path appears to be the included file's absolute path appended to
+the current working directory.
+<br />
+and if the included file contains an error, the error messages show --<pre>
+  C:\test\c18\include\c:\test\c18\include\header.h:1:Error: syntax error
+</pre>
+<DT>(<A NAME="SSR27540"><b>27540</b></A>)<br />
+A malformed expression in a #if preprocessor directive on the last
+line of a file with no terminating end of line character may cause
+the preprocessor to crash.<br />
+For example:<pre>
+  #define symbol
+  #if symbol /* end of file */
+</pre>
+causes the preprocessor to crash.<br />
+<br />
+Workaround: Terminate the source file by adding a blank last line.<br />
+The preprocessor will display an error without crashing.<br />
+<br />
+<DT>(<A NAME="SSR27541"><b>27541</b></A>)<br />
+#undef on the last line of a source file with no terminating end of
+line character may cause the preprocessor to crash.<br />
+The following source file:<pre>
+  #include &lt;p18cxxx.h&gt;
+  
+  void  main(void)
+  {
+     while(1);
+  }
+  
+  #undef  SOME_LABEL /* end of file */
+</pre>
+causes the preprocessor to crash.<br />
+<br />
+Workaround: Terminate the source file by adding a blank last line.<br />
+<DT>(<A NAME="SSR28101"><b>28101</b></A>)<br />
+Circular or recursive macro defnitions can cause the
+preprocessor to take up all available CPU cycles and hang for a long time before giving an error.<br />
+For example, the following code:<pre>
+  void main(void)
+  {
+    #define f g
+    #define g f
+    f(1);
+  }
+</pre>causes the preprocessor to hang for a long time, then give an error similar to:<pre>
+  Preprocessor Error : out of dynamic memory in yy_scan_buffer
+</pre>
+</DL>
+<h2>Libraries</h2>
+<b>Note</b>: From the release of MPLAB C18 v2.42 onward, no support has been added to the peripheral libraries.<br /><br />
+<DL>
+<DT>(<A NAME="SSR18624"><b>18624</b></A>)<br />
+The library routine 'atof' generates a result less precise than simply
+assigning a constant. For example:<br />
+<pre>
+  float a, c;
+  char b[] = ".15625";
+  void main ( )
+  {
+    a = atof (b);
+    c = .15625;
+  }
+</pre>
+The representation of 'c' is 0x7c200000 and 'a' is 0x7c1fffff.<br />
+<br />
+<DT>(<A NAME="SSR23497"><b>23497</b></A>)<br />
+Timer5, SPI, and I2C peripherals not implemented for 18F2331, 18F2431,
+18F4331, and 18F4431; nor is the enhanced facility (function baudUSART)
+implemented for these devices.<br />
+The peripheral libraries do not currently support these peripherals
+on these devices.<br />
+<br />
+<DT>(<A NAME="SSR26882"><b>26882</b></A>)<br />
+Library c018iz.o does not zero bank 15 at startup.<br />
+<DL><DT>Workarounds:</DT>
+<DD>Modify the startup code to point FSR0 to the highest general purpose RAM location.</DD>
+<DD>Specifically zero the variables located in bank 15.</DD>
+</DL>
+</DL>
+<h2>Header Files</h2><br />
+<DL>
+<DT>None.<br />
+<br />
+</DL>
+<h2>User Error Screening</h2><br />
+<DL>
+<DT>(<A NAME="SSR26595"><b>26595</b></A>)<br />
+Utilizing an enumerated type for a bitfield does not cause
+an error diagnostic to be issued.<br />
+The following code does not issue an error diagnostic:<pre>
+  enum test_enum {alphavar, betavar, gammavar, deltavar = 5, epsilonvar};
+  typedef struct {
+    enum test_enum S_FH_FT : 3;
+  } _c_LsFH_FT_1_msgType;
+</pre>
+</DL>
+</span>
+<LI class="Heading0"><h1><A NAME="Contributors">Contributors</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<p>
+Microchip gratefully acknowledges the contributions of the following
+to the development of MPLAB C18.</p>
+<p>Daniel Madill, Quanser Consulting --<br />
+December 2000, Optimizations to fixed point divide library routines.</p>
+</span>
+<LI class="Heading0"><h1><A NAME="Support">Customer Support</A></h1>
+<span style="font-size:10pt;font-weight:normal;">
+<br />
+Microchip provides online support via our home page at:<br />
+<A HREF="http://www.microchip.com">http://www.microchip.com</A><br />
+<br />
+Technical support is available through the web site at:<br />
+<A HREF="http://support.microchip.com">http://support.microchip.com</A><br />
+<br />
+A forum for discussion of Microchip products and tools is
+available at:<br />
+<A HREF="http://forum.microchip.com">http://forum.microchip.com</A><br />
+</span>
+</OL>
+</span>
+</body>
+</html>
+

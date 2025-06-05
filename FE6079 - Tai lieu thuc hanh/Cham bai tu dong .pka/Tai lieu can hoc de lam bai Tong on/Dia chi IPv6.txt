@@ -1,0 +1,3 @@
+Các bạn học về địa chỉ IPv6 qua các link sau:
+https://www.cisco.com/c/en/us/solutions/ipv6/overview.html
+https://www.cisco.com/c/en/us/support/docs/ip/ip-version-6-ipv6/113361-ipv6-static-routes.html?dtid=osscdc000283

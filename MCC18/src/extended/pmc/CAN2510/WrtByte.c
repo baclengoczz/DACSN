@@ -1,0 +1,14 @@
+#include "spi_can.h"
+#include <spi.h>
+#include <can2510.h>
+
+
+void CAN2510ByteWrite( unsigned char addr, unsigned char value )
+{
+    CAN2510Enable(  );                        // Enable SPI Communication to MCP2510
+    while( WriteSPI(CAN2510_CMD_WRITE) );
+    while( WriteSPI(addr) );
+    while( WriteSPI(value) );
+    CAN2510Disable(  );                       // Disable SPI Communication to MCP2510
+}
+

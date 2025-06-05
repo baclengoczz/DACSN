@@ -1,0 +1,10 @@
+cpp -- Microchip C Pre-Processor
+
+This is the source code to the cpp18 executable included with
+the MPLAB C18 compiler. It is not anticipated that users of
+MPLAB C18 will have need to re-build the preprocessor. The
+source code is included simply because some folks might find
+it interesting. In short, if you're curious how the pre-processor
+works, here it is, if not, you can safely ignore it.
+
+pre-requisites: popt library >= v1.5 (available from ftp.redhat.com)

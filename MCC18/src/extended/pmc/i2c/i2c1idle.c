@@ -1,0 +1,17 @@
+/* $Id:  */
+#include <p18cxxx.h>
+#include <i2c.h>
+
+
+/********************************************************************
+*     Function Name:    IdleI2C1                                    *
+*     Return Value:     void                                        *
+*     Parameters:       void                                        *
+*     Description:      Test and wait until I2C1 module is idle.    *
+********************************************************************/
+#undef IdleI2C1
+void IdleI2C1( void )
+{
+  while ( ( SSP1CON2 & 0x1F ) | ( SSP1STATbits.R_W ) )
+     continue;
+}

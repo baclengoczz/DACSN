@@ -1,0 +1,1375 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>MPASM Assembler Release Notes</title>
+<style type="text/css">
+span {
+	font-family: Arial;
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+pre {
+	font-family: monospace;
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+p.Heading0, li.Heading0, div.Heading0, span.Heading0 {
+	font-size:14.0pt;
+	font-family:Arial;
+	font-weight:bold;
+}
+h1 {
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.3in;
+	text-indent:-.3in;
+	page-break-after:avoid;
+	tab-stops:list .3in;
+	font-size:14.0pt;
+	font-family:Arial;
+}
+h2 {
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.4in;
+	text-indent:-.4in;
+	page-break-after:avoid;
+	mso-outline-level:2;
+	tab-stops:list .4in;
+	font-size:12.0pt;
+	font-family:Arial;
+}
+DL, DT, OL, UL, LI, DD {
+    list-style-position: outside;
+}
+pre {
+    font-family: monospace;
+}
+code {
+    font-family: monospace;
+}
+</style>
+</head>
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<span><div class=Heading0>Release Notes for MPASM&trade; Assembler v5.10<br /></div>
+26 January 2007<br />
+<br />
+<div class=Heading0>Table of Contents</div>
+<OL>
+<LI><A HREF="#Compatibility" TITLE="Jump to 'Important MPLINK and MPLAB IDE Compatibility Note' Section">Important MPLINK and MPLAB IDE Compatibility Note</A></LI>
+<LI><A HREF="#Devices" TITLE="Jump to 'Command Line Device Options Supported' Section">Command Line Device Options Supported</A></LI>
+<LI><A HREF="#OSSupport" TITLE="Jump to 'Operating System Support List' Section">Operating System Support List</A></LI>
+<LI><A HREF="#Fixed" TITLE="Jump to 'Repairs and Enhancements Made Since v5.00' Section">Repairs and Enhancements Made Since v5.00</A></LI>
+<LI><A HREF="#KnownProblems" TITLE="Jump to 'Known Problems' Section">Known Problems</A></LI>
+<LI><A HREF="#UsingMPASM" TITLE="Jump to 'Using MPASM Assembler' Section">Using MPASM Assembler</A></LI>
+<LI><A HREF="#Support" TITLE="Jump to 'Customer Support' Section">Customer Support</A></LI>
+</OL>
+<OL style="list-style-type:decimal;">
+<LI class="Heading0"><h1><A NAME="Compatibility">Important MPLINK and MPLAB IDE Compatibility Note</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<p>Due to a change in COFF file format, MPASM v5.00 and later will
+not be compatible with versions of MPLINK prior to v4.00 or
+versions of the MPLAB IDE prior to v7.21.</p>
+<p>MPASM v5.00 and later will have backward compatibility to earlier
+versions at the source level only. Any existing object files or
+libraries compiled with earlier versions of the tools will not link
+using new versions of the tools. They will need to be recompiled
+from source.</p>
+<p>If the user attempts to use this release with object files or
+libraries compiled with earlier versions of MPLAB C18, MPLINK, and
+MPASM, the error message that will be received will be similar to:</p>
+<pre>
+Error - Coff file format for 'C:\mcc18\lib/c018i.o' is out of date.
+</pre>
+<p>If the user attempts to use an old version of MPLINK to link object
+files or libraries compiled with this release, the error message that
+will be received will be similar to:<br />
+<code><br />
+Error - Coff file format for 'C:\mcc18\lib/c018i.o' does not appear to be a valid COFF file.<br />
+</code><br />
+</span>
+<LI class="Heading0"><h1><A NAME="Devices">Command Line Device Options Supported</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<pre>
+10F200       10F202       10F204       10F206
+10F220       10F222
+
+12C508       12C508A      12C509       12C509A
+12C671       12C672
+12CE518      12CE519      12CE673      12CE674
+12CR509A
+12F508       12F509       12F510       12F609
+12F615       12F629       12F635       12F675
+12F683
+12HV609*     12HV615*
+
+14000
+
+16C432       16C433       16C505       16C52
+16C54        16C54A       16C54B       16C54C
+16C55        16C554       16C557       16C558
+16C55A       16C56        16C56A       16C57
+16C57C       16C58A       16C58B
+16C5X
+16C61        16C62        16C620       16C620A
+16C621       16C621A      16C622       16C622A
+16C62A       16C62B       16C63        16C63A
+16C64        16C642       16C64A       16C65
+16C65A       16C65B       16C66        16C662
+16C67        16C71        16C710       16C711
+16C712       16C715       16C716       16C717
+16C72        16C72A       16C73        16C73A
+16C73B       16C74        16C745       16C747
+16C74A       16C74B       16C76        16C765
+16C77        16C770       16C771       16C773
+16C774       16C781       16C782       16C84
+16C923       16C924       16C925       16C926
+16CE623      16CE624      16CE625
+16CR54       16CR54A      16CR54B      16CR54C
+16CR56A      16CR57A      16CR57B      16CR57C
+16CR58A      16CR58B      16CR62       16CR620A
+16CR63       16CR64       16CR65       16CR72
+16CR83       16CR84
+16CXX
+16F505       16F506       16F54        16F57
+16F59        16F610       16F616       16F627
+16F627A      16F628       16F628A      16F630
+16F631       16F636       16F639       16F648A
+16F676       16F677       16F684       16F685
+16F687       16F688       16F689       16F690
+16F716       16F72        16F722*      16F723*
+16F724*      16F726*      16F727*      16F73
+16F737       16F74        16F76        16F767
+16F77        16F777       16F785       16F818
+16F819       16F83        16F84        16F84A
+16F87        16F870       16F871       16F872
+16F873       16F873A      16F874       16F874A
+16F876       16F876A      16F877       16F877A
+16F88        16F882*      16F883       16F884
+16F886       16F887       16F913       16F914
+16F916       16F917       16F946
+
+16HV540      16HV610*      16HV616      16HV785
+
+17C42        17C42A       17C43        17C44
+17C752       17C756       17C756A      17C762
+17C766
+17CR42       17CR43
+17CXX
+
+18C242+      18C252+      18C442+      18C452+
+18C601+      18C658+      18C801+      18C858+
+
+18F1220+     18F1230      18F1231      18F1320+
+18F1330      18F1331      18F2220+     18F2221
+18F2320+     18F2321      18F2331+     18F2410+
+18F242+      18F2420+     18F2423      18F2431+
+18F2439+     18F2450      18F2455+     18F2458*
+18F248+      18F2480+     18F24J10+    18F24K20
+18F2510+     18F2515+     18F252+      18F2520+
+18F2523      18F2525+     18F2539+     18F2550+
+18F2553*     18F258+      18F2580+     18F2585+
+18F25J10+    18F25K20     18F2610+     18F2620+
+18F2680+     18F2682      18F2685      18F4220+
+18F4221      18F4320+     18F4321      18F4331+
+18F4410+     18F442+      18F4420+     18F4423
+18F4431+     18F4439+     18F4450      18F4455+
+18F4458*     18F448+      18F4480+     18F44J10+
+18F44K20     18F4510+     18F4515+     18F452+
+18F4520+     18F4523      18F4525+     18F4539+
+18F4550+     18F4553*     18F458+      18F4580+
+18F4585+     18F45J10+    18F45K20     18F4610+
+18F4620+     18F4680+     18F4682      18F4685
+18F6310+     18F6390+     18F63J11     18F63J90
+18F6410+     18F6490+     18F64J11     18F64J15
+18F64J90     18F6520+     18F6525+     18F6527+
+18F6585+     18F65J10+    18F65J11     18F65J15+
+18F65J50     18F65J90     18F6620+     18F6621+
+18F6622+     18F6627+     18F6680+     18F66J10+
+18F66J11     18F66J15+    18F66J16     18F66J50
+18F66J55     18F66J60     18F66J65     18F6720+
+18F6722+     18F67J10+    18F67J11     18F67J50
+18F67J60     18F8310+     18F8390+     18F83J11
+18F83J90     18F8410+     18F8490+     18F84J11
+18F84J15     18F84J90     18F8520+     18F8525+
+18F8527+     18F8585+     18F85J10+    18F85J11
+18F85J15+    18F85J50     18F85J90     18F8620+
+18F8621+     18F8622+     18F8627+     18F8680+
+18F86J10+    18F86J11     18F86J15+    18F86J16
+18F86J50     18F86J55     18F86J60     18F86J65
+18F8720+     18F8722+     18F87J10+    18F87J11
+18F87J50     18F87J60     18F96J60     18F96J65
+18F97J60
+
+EEPROM16     EEPROM8
+
+RF509AF      RF509AG      RF675F       RF675H
+RF675K
+</pre><p>
+*<b>Note</b>: Early adopter support has been added for these devices since last release</p><p>
++<b>Note</b>: These are the only PIC18 devices with peripheral library support.</p>
+<p>
+THE PARTS CORRESPONDING TO THESE OPTIONS MAY NOT ALL BE
+COMMERCIALLY AVAILABLE.</p>
+<p>
+These can be chosen through the introductory screen, on the command
+line, or in source file.</p>
+<p></p>
+<b>NOTES:</b><UL>
+<LI>The selections 16C5X, 16CXX, 17CXX, and
+18CXX are supported as generic family indicators.</LI>
+<LI>The selections EEPROM8 and EEPROM16 are provided for generic memory
+product support. Read below for a description of how to use MPASM
+Assembler to generate files for programming Microchip Serial EEPROM
+devices.</LI>
+<LI>Use files 'MCP250XX.INC' and 'MCP250XX.ASM' as references for
+programming I/O expander (MCP250XX) devices. The file 'MCP250XX.ASM'
+is in the 'TEMPLATE\CODE' directory under 'MPLAB'.<br />
+The standard header files have been updated to reflect these devices.
+One header file, MEMORY.INC, is provided for generic memory product
+support. Another header file, MCP250XX.INC, is provided for generic
+MCP250XX device support.</LI>
+<LI>The devices 18F2423, 18F2523, 18F4423, and 18F4523 were
+formerly known as 18LF2423, 18LF2523, 18LF4423, 18LF4523.</LI>
+<LI>Use the P12C509A.INC header file for the PIC12CR509A;
+Use the P16C620A.INC header file for the PIC16CR620A.</LI>
+<LI>Use the P16C74.INC header file for the PIC16CR74;
+Use the P16C77.INC header file for the PIC16CR77.</LI>
+<LI>Use the 16C5X.INC header file for the following device command
+line options:
+<pre>
+                16C52
+                16C54
+                16CR54
+                16C54A
+                16CR54A
+                16C54B
+                16CR54B
+                16C54C
+                16CR54C
+                16C55
+                16C55A
+                16C56
+                16C56A
+                16CR56A
+                16C57
+                16CR57A
+                16CR57B
+                16C57C
+                16CR57C
+                16C58A
+                16CR58A
+                16C58B
+                16CR58B
+</pre></LI>
+<LI>Use the P16F5X.INC header file for the following device
+command line options:<pre>
+                16F54
+                16F57
+                16F59
+</pre></LI>
+</UL>
+</span>
+<LI class="Heading0"><h1><A NAME="OSSupport">Operating System Support List</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<p>MPASMWIN.EXE is the 32-bit Windows version of MPASM Assembler which
+is distributed with MPLAB IDE and MPLAB C18. It is supported by the
+following platforms:</p>
+Windows 2000 and Windows XP
+<p>MPASM.EXE is the command-line version of MPASM Assembler which is
+distributed with MPLAB C18 only. It is supported by the following
+platforms:</p>
+Windows 2000 and Windows XP</p>
+<p><b>NOTE</b>: MPASM.EXE does not support device file names greater than an 8.3 format (e.g. p18f87J15.INC). Use MPASMWIN.EXE instead.</p>
+</span>
+<LI class="Heading0"><h1><A NAME="Fixed">Repairs and Enhancements Made Since v5.00</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<ul>
+<li><h2>Problems resolved between v5.06.04 and v5.10:</h2>
+<DL>
+<DT>(<b>25130</b>)<DD>An incorrect error message, referring to an odd number of bytes instead of an odd address, could be given when using an RES directive.
+</DT><br /><br />
+<DT>(<b>25131</b>)<DD>In some cases assembly code written to reserve memory can reserve no memory and produce no raw data in the COFF file.
+In earlier versions, no warning was given when that would happen.
+Now the assembler will give a warning when such code reserves no memory.
+</DT><br /><br />
+<DT>(<b>MPASM-114</b>)<DD>In support files for 16F883 and 16F884, __BADRAM was defined incorrectly.
+</DT><br /><br />
+<DT>(<b>MPASM-115</b>)<DD>Support files for 12F615 were corrected to match the datasheet. Bits PORTA, TRISA and GPIO were added also.
+</DT><br /><br />
+<DT>(<b>MPASM-116</b>)<DD>In support files for 16F616 and 16HV616, FVREN now refers to bit 4 of VRCON, conforming to the current naming convention.
+</DT><br /><br />
+<DT>(<b>MPASM-117</b>)<DD>In support files for 16F913, 16F914, 16F916, and 16F917, GO now refers to bit 1 of ACDON0.
+This was required to use some assembler examples with these devices.
+</DT><br /><br />
+<DT>(<b>MPASM-118</b>)<DD>Support files for 16F610 were corrected to match the datasheet.
+</DT><br /><br />
+<DT>(<b>MPASM-119</b>)<DD>Support files for 16F616 and 16HV616 were corrected to match the datasheet.<br />
+<br />
+SRCON0 bit 4 renamed C2REN instead of C2SEN.<br />
+SRCON1 bit 6 renamed SRCS0 instead of SRCS2.<br />
+</DT><br />
+<DT>(<b>MPASM-120</b>)<DD>Support files for 12F609 and 12HV609 were corrected to match the datasheet.
+Some aliases were also added for compatibility with other devices.
+</DT><br /><br />
+</DL>
+<li><h2>Enhancements between v5.06.04 and v5.10:</h2>
+<DL>
+<DT>Support for MPLAB REAL ICE Instrumented Trace is provided.
+</DT><br /><br />
+</DL>
+<li><h2>Enhancements between v5.06 and v5.06.04:</h2>
+<DL>
+<DT>This revision of MPASM Assembler includes slight modifications to provide beta support for
+Instrumented Trace using MPLAB IDE and MPLAB REAL ICE In-Circuit Emulator System.<br />
+These changes do not affect users not using MPLAB REAL ICE.
+</DT><br /><br />
+</DL>
+<li><h2>Problems resolved between v5.05 and v5.06:</h2>
+<DL>
+<DT>(<b>22612</b>)<DD>Combining a typedef name with a 'rom' type qualifier in a
+declaration would assign the incorrect type if 'rom' followed the
+typedef name.
+</DD></DT><br /><br />
+<DT>(<b>28973</b>)<DD>Modifications were required in the support files for the 18F87J50 and 18F87J11 families.<br />
+The following modifications were made to bit names in these support files:<br /><br />
+PMDATA1L renamed PMDIN1L<br />
+PMDATA1H renamed PMDIN1H<br />
+PMDATA2L renamed PMDIN2L<br />
+PMDATA2H renamed PMDIN2H<br />
+ADCON1 renamed ADCON0<br />
+ADCON2 renamed ADCON1<br />
+PADCFGH renamed ANCON0<br />
+PADCFGL renamed ANCONH<br />
+VREGSLP renamed REGSLP (in WDTCON register)
+</DD></DT><br /><br />
+<DT>(<b>28979</b>)<DD>Setting for 2.0V BOR is removed from support files for 18F1320.
+</DD></DT><br /><br />
+<DT>(<b>29218</b>)<DD>The descriptions of WRTB and WRTC configuration bits in support files for 18F2455 and 18F4455 were swapped, but have been corrected.
+The WRTB affects the write protection of the boot block, and the WRTC affects the configuration registers.
+</DD></DT><br /><br />
+<DT>(<b>29219</b>)<DD>The descriptions of WRTB and WRTC configuration bits in 18F2455 and 18F4455 were swapped in the MPLAB C18 Config Settings Addendum (DS51537 revision E).
+This document is now obsolete, and has been replaced with the help file, hlpPIC18ConfigSet.chm.
+The descriptions of these configuration bits in the help file in this release have been corrected.
+</DD></DT><br /><br />
+<DT>(<b>29261</b>)<DD>Support files for the 18F45K20 family of devices were changed to match the datasheet.<br />
+The following changes were made:<br />
+<br />
+Register PSTCON renamed PSTRCON<br />
+Added CKTXP (bit 4) and DTRXP (bit 5) to BAUDCTL<br />
+Changed IPR2 (bit 5) from CM2IP to C2IP<br />
+Changed IPR2 (bit 6) from CM1IP to C1IP<br />
+Changed PIR2 (bit 5) from CM2IF to C2IF<br />
+Changed PIR2 (bit 6) from CM1IF to C1IF<br />
+Changed PIE2 (bit 5) from CM2IE to C2IE<br />
+Changed PIE2 (bit 6) from CM1IE to C1IE<br />
+Added TUN5 (bit 5) to OSCTUNE<br />
+Added MSK0-MSK7 bits to SSPMSK register<br />
+Updated configuration setting descriptions to match datasheet
+</DD></DT><br /><br />
+<DT>(<b>29287</b>)<DD>In support files for 18F4550, 18F4455, 18F2550, 18F2455, 18F4450, and 18F2450, bit name FCMEM in CONFIG1H was changed to FCMEN to match the datasheet, DS39632C.
+</DD></DT><br /><br />
+</DL>
+<li><h2>Problems resolved between v5.04 and v5.05:</h2>
+<DL>
+<DT>(<b>28976</b>)<DD>EEDAT was added as a register name, synonymous with EEDATA,
+in device support files for the 16F887 family of devices to match data sheet DS41291B.
+</DD></DT><br /><br />
+<DT>(<b>28977</b>)<DD>UFRMH bits 0-2 (FRM8 - FRM10) and UFRML bits 0-8 (FRM0 - FRM7) were added
+to device support files for the 18F4450 family of devices to match data sheet DS39760A.
+</DD></DT><br /><br />
+<DT>(<b>28978</b>)<DD>Device support files for the 18F85J90 family were modified to match data sheet DS39770A. The following changes were made:<br /><br />
+MEMCON register has been removed.<br />
+DISCARD bit in ADCON0 has been removed.<br />
+PSPIP bit in IPR1 register has been removed.<br />
+LATE bit in LATE register has been removed.<br />
+PSPIE bit in PIE1 register has been removed.<br />
+PSPIF bit in PIR1 register has been removed.<br />
+TRISE2 bit in TRISE register has been removed.<br />
+</DD></DT><br /><br />
+<DT>(<b>28489</b>)<DD>RE3 (PORTE) is not available as input on devices 18F2331/2431, so it has been removed from .INC files.
+</DD></DT><br /><br />
+<DT>(<b>28592</b>)<DD>The .INC files for the 16F887 family of devices were missing the SSPMSK register and the SENDB bit in the TXSTA register.<br />
+</DD></DT><br /><br />
+<DT>(<b>28600</b>)<DD>GPR locations from 0XE86-0XE89, 0XED6-0XED7 are unimplemented for the 18F97J60 family of devices and have been removed from the INC files.<br />
+</DD></DT><br /><br />
+<DT>(<b>28696</b>)<DD>For 18F85J11, 18F84J11 and 18F83J11, the config
+directive for the External Memory Bus Configuration bits (MODE =) defined the bits in reverse order.<br />
+<b>Note: </b>The workaround recommended in the Read Me file for MPASM v5.04 is no longer correct. Instead simply use the config directive as described in the Config Settings Help file.
+</DD></DT><br /><br />
+<DT>(<b>28789</b>)<DD>The RE3 bit of PORTE was missing from include files for the 18F2221 and 18F2321 devices.
+</DD></DT><br /><br />
+</DL>
+<li><h2>Problems resolved between v5.03 and v5.04:</h2>
+<DL>
+<DT>(<b>28292</b>)<DD>INTEDG2 bit of INTCON2&lt;4&gt;, was missing from INC files of 18F458 family devices.
+</DD></DT><br /><br />
+</DL>
+<li><h2>Problems resolved between v5.02 and v5.03:</h2>
+<DL>
+<DT>(<b>27893</b>)<DD>Bits were missing in the INC file for devices 18F1330 and 18F1230 according to data sheet DS39758A.<br />
+SEVTEN (ADCON0&lt;7&gt;) and INTSRC (OSCTUNE&lt;7&gt;) have been added to the INC file.<br />
+CVROE (CVRCON&lt;6&gt;) and FLTCON (FLTCONFIG) are unimplemented and were removed from the INC file.<br />
+Correct bit names for DTCON have been added in the INC file.
+</DD></DT><br /><br />
+<DT>(<b>24712</b>)<DD>GPIO SFR bits GP3, GP2, GP1, and GP0 were not defined in the
+.INC files for the PIC10F20X devices. GPIO bit names have been added to 10F200/202/204/206/220/222.
+</DD></DT><br /><br />
+<DT>(<b>27953</b>)<DD>For 18F87J10, the config directive for the External Memory
+Bus Configuration bits (MODE =) defined the bits in reverse order.<br />
+<b>NOTE:</b> The workaround recommended for this issue in a previous release, v5.02, is no longer valid.<br />
+When using the config directive,
+please follow the instructions in the PIC18 Config Settings Help file:<br /><br />
+<TABLE BORDER=0 COLS=3>
+<TR><TD>MM</TD><TD>instead of XM20</TD><TD>for MCU mode - External bus disabled</TD></TR>
+<TR><TD>XM12</TD><TD>instead of XM16</TD><TD>for Extended MCU mode, 12-bit Address mode</TD></TR>
+<TR><TD>XM16</TD><TD>instead of XM12</TD><TD>for Extended MCU mode, 16-bit Address mode</TD></TR>
+<TR><TD>XM20</TD><TD>instead of MM</TD><TD>for Extended MCU mode, 20-bit Address mode</TD></TR>
+</TABLE><br />
+The MPLAB IDE settings were always correct. Only the
+config directive settings were incorrect.
+</DD></DT><br /><br />
+<DT>(<b>27948</b>)<DD>In the MPLAB IDE, macro expansion was incorrect in the Disassembly Listing display when the macro was defined in an include file.
+</DD></DT><br /><br />
+<DT>(<b>17233</b>)<DD>Errors in macros in an include file could be reported in an asm
+file that included it. If a macro was defined in an include file
+and called in an asm file, MPASM reported errors, warnings, and
+messages in the macro definition as errors, warnings, and
+messages in the asm file, but using line numbers from the
+include file.
+</DD></DT><br /><br />
+<DT>(<b>28136</b>)<DD>
+Configuration word changes for 18F2585/2680/4584/4680 devices:<br />
+<br />
+OSC setting - ERC value has been removed. Use RC<br />
+OSC setting - ERC1 value has been removed. Use RC<br />
+FCMENB setting has been changed to FCMEN<br />
+IESOB setting has been changed to IESO<br />
+BOR setting has been changed to BOREN<br />
+BORV setting value 20 has been changed to 3<br />
+BORV setting value 27 has been changed to 2<br />
+BORV setting value 42 has been changed to 1<br />
+BORV setting value 45 has been changed to 0<br />
+<br />
+Additional Configuration word changes for 18F2585/4585:<br />
+<br />
+CP3 setting has been removed<br />
+WRT3 setting has been removed<br />
+EBTR3 setting has been removed<br />
+<br />
+SFR changes for 18F2585/2680/4585/4680 .INC files:
+<br />
+RB0 is bit 0 in PORTB and bit 4 in other SFRs so use "RB0_SFRname" where SFRname is the name of the SFR<br />
+RB1 is bit 1 in PORTB and bit 5 in other SFRs so use "RB1_SFRname" where SFRname is the name of the SFR<br />
+<br />
+CANSTAT bit 1 has been renamed from ICODE0 to ICODE1<br />
+CANSTAT bit 2 has been renamed from ICODE1 to ICODE2<br />
+CANSTAT bit 3 has been renamed from ICODE2 to ICODE3<br />
+<br />
+ICODE0_CANSTAT_R0x where x is 0-9 is now ICODE0<br />
+ICODE1_CANSTAT_R0x where x is 0-9 is now ICODE1<br />
+ICODE2_CANSTAT_R0x where x is 0-9 is now ICODE2<br />
+<br />
+RXRTRRO is bit 3 in RXB1CON and RXB0CON but bit 5 in BxCON where x is 0-5 so use "RXRTRRO_SFRname" where SFRname is the name of the SFR.<br />
+T3ECCP1 (on T3CON) was incorrectly defined as bit 5 but has been corrected to bit 6.
+</DD></DT><br /><br />
+<DT>(<b>26624</b>)<DD>In 18F8680.h the FIFOWMIF bit was missing from PIR3.
+</DD></DT><br /><br />
+<DT>(<b>27988</b>)<DD>
+Added PORTE bit RE3 to 18F2431 and 18F2331 device header files and INC files.
+</DD></DT><br /><br />
+<DT>(<b>27620</b>)<DD>Support files for the 18F4580 family (18F4580/2580/2480) were corrected to match the data sheet DS39637A.<br /><br />
+Configuration word changes for 18F2480/2580/4480/4580:<br />
+<br />
+OSC setting - ERC value has been removed use RC<br />
+OSC setting - ERC1 value has been removed use RC<br />
+FCMENB setting has been changed to FCMEN<br />
+IESOB setting has been changed to IESO<br />
+BOR setting has been changed to BOREN<br />
+BORV setting value 20 has been changed to 3<br />
+BORV setting value 27 has been changed to 2<br />
+BORV setting value 42 has been changed to 1<br />
+BORV setting value 45 has been changed to 0<br />
+<br />
+Additional Configuration Word changes for 18F4480:<br />
+<br />
+CP2 and CP3 settings have been removed<br />
+WRT2 and WRT3 settings have been removed<br />
+EBTR2 and EBTR3 settings have been removed<br />
+<br />
+SFR changes for 18F2480/2580/4480/4580 .INC files:<br />
+<br />
+RB0 is bit 0 in PORTB and bit 4 in other SFRs so use "RB0_SFRname" where SFRname is the name of the SFR.<br />
+RB1 is bit 1 in PORTB and bit 5 in other SFRs so use "RB1_SFRname" where SFRname is the name of the SFR.<br />
+<br />
+CANSTAT bit 1 has been renamed from ICODE0 to ICODE1<br />
+CANSTAT bit 2 has been renamed from ICODE1 to ICODE2<br />
+CANSTAT bit 3 has been renamed from ICODE2 to ICODE3<br />
+<br />
+ICODE0_CANSTAT_R0x where x is 0-9 is now ICODE0<br />
+ICODE1_CANSTAT_R0x where x is 0-9 is now ICODE1<br />
+ICODE2_CANSTAT_R0x where x is 0-9 is now ICODE2<br />
+<br />
+RXRTRRO is bit 3 in RXB1CON and RXB0CON but bit 5 in BxCON where x is 0-5 so use "RXRTRRO_SFRname" where SFRname is the name of the SFR.<br />
+<br />
+T3ECCP1 (on T3CON) was incorrectly defined as bit 5 but has been corrected to bit 6.<br />
+EXIDEN (on RXF1SIDL) was incorrectly defined as bit 1 but has been corrected to bit 3.<br />
+EXIDE (on B1SIDL) was incorrectly defined as bit 1 but has been corrected to bit 3.<br />
+<br />
+Additional SFR changes for 18F4480 .INC files:<br />
+<br />
+RXFxSIDL where x is 0-5, bit EXIDEN was changed from bit 1 to bit 3 to correctly match the data sheet. Use EXIDEN instead of "EXIDEN_SFRname".<br />
+RXMxSIDL where x is 0-1, bit 3 is now EXIDEN instead of "EXIDEN_SFRname".<br />
+<br />
+Additional SFR changes for 18F4580 .INC files:<br />
+<br />
+RXFxSIDL where x is 6-15, bit 3 is now EXIDE instead of "EXIDE_SFRname".<br />
+BxSIDL where x is 0-4, bit 3 is now EXIDE instead of "EXIDE_SFRname".<br />
+RXFxSIDL where x is 0-5, bit 3 is now EXIDE or EXIDEN instead of "EXIDE_SFRname" or "EXIDEN_SFRname".<br />
+RXMxSIDL where x is 0-1, bit 3 is now EXIDEN instead of "EXIDEN_SFRname".<br />
+TXBxSIDL where x is 0-2, bit 3 is now EXIDE instead of "EXIDE_SFRname".
+</DD></DT><br /><br />
+</DL>
+<li><h2>Problems resolved between v5.01 and v5.02:</h2>
+<DL>
+<DT>(<b>27432</b>)<DD>The 18F87J10 family (18F65J10/65J15/66J10/66J15/67J10/67J15,
+18F85J10/85J15/86J10/86J15/87J10) include files had _config
+information, but MPASM does not support the _config directive
+for them.</DD></DT><br /><br />
+<DT>(<b>27700</b>)<DD>In the include files for 16F873A, 16F874A, and 16F876A, the
+INTCON bits TMR0IE and TMR0IF, and the ADCON1 bit ADCS2 have
+been added. For 16F877A, the ADCON1 bit ADCS2 has been added.
+The include files now match the information in DS39582B.</DD></DT><br /><br />
+<DT>(<b>27689</b>)<DD>In the include file for 16F872, INTCON bits TMR0IE and TMR0IF
+have been added.</DD></DT><br /><br />
+<DT>(<b>27949</b>)<DD>For 18F87J10, 18F86J10, or 18F97J60, attempting to access
+external memory gave an error that the argument was out of
+range.</DD></DT><br /><br />
+</DL>
+<li><h2>Problems resolved between v5.00 and v5.01:</h2>
+<DL>
+<DT>(<b>27358 / 27515</b>)<DD>The new config directive causes unimplemented bits to
+become 0, but should be left a '1'.<br />
+Unimplemented/reserve bits are now included in the mask and
+default settings when the bit must be maintained set.<br />
+<br />
+Following are the devices and configuration words that were
+corrected:<pre>
+    18C442  CONFIG1H, CONFIG4L
+    18C452  CONFIG1H, CONFIG4L
+    18C658  CONFIG1H, CONFIG4L
+    18C858  CONFIG1H, CONFIG4L
+    18F242  CONFIG5L, CONFIG6L, CONFIG7L
+    18F442  CONFIG5L, CONFIG6L, CONFIG7L
+    18F6525 CONFIG3L, CONFIG5L, CONFIG6L, CONFIG7L
+    18F6621 CONFIG3L
+    18F8525 CONFIG5L, CONFIG6L, CONFIG7L
+    18F2220 CONFIG5L, CONFIG6L, CONFIG7L
+    18F4220 CONFIG5L, CONFIG6L, CONFIG7L
+    18F2439 CONFIG5L, CONFIG6L, CONFIG7L
+    18F4439 CONFIG5L, CONFIG6L, CONFIG7L
+    18F2525 CONFIG5L, CONFIG6L, CONFIG7L
+    18F4525 CONFIG5L, CONFIG6L, CONFIG7L
+    18F6520 CONFIG2L, CONFIG2H, CONFIG3L, CONFIG3H, CONFIG5L,
+            CONFIG6L, CONFIG7L
+    18F6620 CONFIG3L, CONFIG5L, CONFIG6L, CONFIG7L
+    18F6720 CONFIG3L
+    18F8520 CONFIG2L, CONFIG2H, CONFIG3H, CONFIG5L, CONFIG6L,
+            CONFIG7L
+    18F8620 CONFIG5L, CONFIG6L, CONFIG7L
+</pre>
+18F2331 and 18F2431 had extra settings removed that are
+unimplemented on these devices as follows:<br />
+CONFIG5L - Removed settings for CP2 and CP3.<br />
+CONFIG6L - Removed settings for WRT2 and WRT3.<br />
+CONFIG7L - Removed settings for EBTR2 and EBTR3.<br />
+<br />
+In addition, 18F2525, 18F2620, 18F4525 and 18F4620 had their
+value names modified in CONFIG2L for the BORV setting to be
+3 (for Minimum setting), 2, 1, and 0 (for Maximum setting).
+</DD></DT><br /><br />
+<DT>(<b>27518</b>)<DD>SWDTEN bit should be 0th bit, but the bit location was 7 on
+        18F4321 family devices. For all devices, changed SWDTEN on
+        SFR WDTCON from bit 7 to bit 0.
+</DD></DT><br /><br />
+<DT>(<b>27519</b>)<DD>18F4321 family device support changes needed to match the data
+        sheet DS39689A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Added SFR ECCP1DEL<br />
+        Added SFR HLVDCON<br />
+        Added missing bits 4 and 5 (TXCKP and RXDTP) to BAUDCON<br />
+        Added missing bits 6 and 7 (P1M0 and P1M1) to CCP1CON<br />
+        Added missing bit 2 (HLVDIP) to IPR2<br />
+        Added missing bit 2 (HLVDIE) to PIE2<br />
+        Added missing bit 2 (HLVDIF) to PIR2<br />
+        Added missing bits 0-4 (SP0, SP1, SP2, SP3, SP4) to STKPTR<br />
+        Added missing bits 1-5 (ADMSK1, ADMSK2, ADMSK3, ADMSK4, ADMSK5)
+            in SSPCON2<br />
+        Changed CONFIG1H FSCM to FCMEN<br />
+        Changed CONFIG2L BORV settings to 3 (Minimum setting), 2, 1,
+            and 0 (Maximum setting)<br />
+        Corrected CONFIG3H default settings<br />
+        Changed CONFIG3H LPT1OSC setting names from LOW and HIGH to
+            ON and OFF to be consistent with other devices<br />
+        Changed CONFIG3H PBAD to PBADEN<br />
+        Corrected CONFIG4L default settings<br />
+        Updated Configuration descriptions to match data sheet<br />
+<br />
+        18F2221/18F2321<br />
+        ---------------<br />
+        Removed ICPORT from CONFIG4L - unimplemented on these devices.
+</DD></DT><br /><br />
+<DT>(<b>27612</b>)<DD>18F4520 family device support changes needed to match the data
+        sheet DS39631A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Change CONFIG2L BORV settings to 3 (Minimum setting), 2, 1,
+            and 0 (Maximum setting)<br />
+<br />
+        18F4520<br />
+        -------<br />
+        Removed SFR EEADRH - unimplemented on this device<br />
+<br />
+        18F4420<br />
+        -------<br />
+        Removed SFR DEBUG - unimplemented on this device<br />
+        Removed - SFR TRISE bits TRISE7, TRISE6, TRISE5, TRISE4 - not
+            in data sheet<br />
+        Removed - SFR PORTB bits DAD5, DAD6, DAD7 - not in data sheet<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings for
+            unimplemented but maintained set bits<br />
+<br />
+        18F2520<br />
+        -------<br />
+        Added missing SFRs PWM1CON and ECCP1AS<br />
+        Removed SFR EEADRH<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+<br />
+        18F2420<br />
+        -------<br />
+        Removed SFR DEBUG - unimplemented on this device<br />
+        Added missing SFRs PWM1CON and ECCP1AS<br />
+        Removed - SFR PORTB bits DAD5, DAD6, DAD7 - not in data sheet<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings for<br />
+                  unimplemented but maintained set bits
+</DD></DT><br /><br />
+<DT>(<b>27614</b>)<DD>18F4550 family device support changes needed to match the data
+        sheet DS39632B.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Corrected bit positions of TUN3 and TUN4 in OSCTUNE<br />
+        UFRMH and UFRML - Add bit names to these register<br />
+        Updated Configuration descriptions to match the data sheet<br />
+        In CONFIG2L, changed BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+<br />
+        18F4550<br />
+        -------<br />
+        Added bits to CCP1DEL and CCP1AS<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+<br />
+        18F4455<br />
+        -------<br />
+        Added bits to CCP1DEL and CCP1AS<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+        Removed CP3 from CONFIG5L, WRT3 from CONFIG6L and EBTR3 from
+            CONFIG7L - they are not available in this device<br />
+<br />
+        18F2550<br />
+        -------<br />
+        Added ECCP1AS and ECCP1DEL and their bits<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+        Removed ICPRT from CONFIG4L - it is not available in
+            this device<br />
+<br />
+        18F2455<br />
+        -------<br />
+        Added ECCP1AS and ECCP1DEL and their bits<br />
+        Corrected default values in CONFIG1L, CONFIG2L and CONFIG3H<br />
+        Removed ICPRT from CONFIG4L, CP3 from CONFIG5L, WRT3 from
+            CONFIG6L and EBTR3 from CONFIG7L - they are not available
+            in this device
+</DD></DT><br /><br />
+<DT>(<b>27615</b>)<DD>18F8410 family device support changes needed to match the data
+        sheet DS39635A.<br />
+<br />
+        18F6310, 18F6410, 18F8310 and 18F8410<br />
+        -------------------------------------<br />
+        Removed EEIP from SFR IPR2 - unimplemented in data sheet<br />
+        Removed EEIE from SFR PIE2 - unimplemented in data sheet<br />
+        Removed EEIF from SFR PIR2 - unimplemented in data sheet<br />
+        Removed TUN5 from SFR OSCTUNE - unimplemented in data sheet<br />
+<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Changed CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+        CONFIG3H - corrected default settings for unimplemented
+            but maintain set bits<br />
+<br />
+        18F6310 and 18F6410<br />
+        -------------------<br />
+        CONFIG3L is unimplemented but to keep the default values set
+            it has been added. No settings are available so it can
+            not be changed<br />
+        Changed CONFIG3H PORTTBE setting to PORTE<br />
+        CONFIG7L is unimplemented for these devices but to keep the
+            default values set it will remain but the EBTR setting
+            is removed
+</DD></DT><br /><br />
+<DT>(<b>27618</b>)<DD>18F87J10 family device support changes needed to match the data
+        sheet DS39663A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        STKPTR - added bits SP4, SP3, SP2, SP1, SP0<br />
+        INTCON2 - added bit INT3IP<br />
+        ADCON0 - added bit ADCAL<br />
+        CCP1CON - added bits P1M1, P1M0<br />
+        CCP2CON - added bits P2M1, P2M0<br />
+        CCP3CON - added bits P3M1, P3M0<br />
+        ECCP1AS - added bits PSS1AC0, PSS1AC1, ECCP1AS0, ECCP1AS1,
+            ECCP1AS2, ECCP1ASE<br />
+        EECON2 - added SFR<br />
+        EECON1 - added SFR and bits FREE, WRERR, WREN, WR<br />
+        OSCTUNE - corrected size of PLLEN<br />
+        BAUDCON1 - added bit RCIDL<br />
+        BAUDCON2 - added bit RCIDL<br />
+        ECCP1DEL - added bits P1DC0, P1DC1, P1DC2, P1DC3, P1DC4,
+            P1DC5, P1DC6, P1RSEN<br />
+        ECCP3AS - added bits PSS3AC0, PSS3AC1, ECCP3AS0, ECCP3AS1,
+            ECCP3AS2, ECCP3ASE<br />
+        ECCP3DEL - added bits P3DC0, P3DC1, P3DC2, P3DC3, P3DC4,
+            P3DC5, P3DC6, P3RSEN<br />
+        ECCP2AS - added bits PSS2AC0, PSS2AC1, ECCP2AS0, ECCP2AS1,
+            ECCP2AS2, ECCP2ASE<br />
+        ECCP3DEL - added bits P2DC0, P2DC1, P2DC2, P2DC3, P2DC4,
+            P2DC5, P2DC6, P2RSEN<br />
+        CONFIG1H - correct default settings<br />
+        Updated configuration descriptions to match data sheet<br />
+<br />
+        18F87J10/86J15/86J10/85J15/85J10<br />
+        --------------------------------<br />
+        ECCP1AS - added bits PSS1BD0, PSS1BD1<br />
+        PORTG - added bits RDPU, REPU, RJPU<br />
+<br />
+        18F67J10/66J15/66J10/65J15/65J10<br />
+        --------------------------------<br />
+        Removed MEMCON - unimplemented on these devices<br />
+        PORTG - added bits RDPU, REPU<br />
+        Added CONFIG3L with no settings to maintain default values<br />
+        CONFIG3H - correct default settings
+</DD></DT><br /><br />
+<DT>(<b>27621</b>)<DD>18F4610 family device support changes needed to match the data
+        sheet DS39636A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Change CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+<br />
+        18F4610<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+<br />
+        18F4515<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F4510<br />
+        -------<br />
+        CONFIG5H, CONFIG6H - corrected default settings<br />
+<br />
+        18F4410<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG5H, CONFIG6L, CONFIG6H, CONFIG7L - corrected
+            default settings<br />
+<br />
+        18F2610<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+<br />
+        18F2515<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F2510<br />
+        -------<br />
+        CONFIG5H, CONFIG6H - corrected default settings<br />
+<br />
+        18F2410<br />
+        -------<br />
+        CONFIG3H - added missing setting for LPT1OSC<br />
+        CONFIG4L - changed setting name ENHCPU to XINST<br />
+        CONFIG5L, CONFIG5H, CONFIG6L, CONFIG6H, CONFIG7L - corrected
+            default settings
+</DD></DT><br /><br />
+<DT>(<b>27622</b>)<DD>18F44J10 family device support changes needed to match the data
+        sheet DS39682A.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated configuration descriptions<br />
+<br />
+        18F45J10/18F44J10<br />
+        -----------------<br />
+        Added bit 7 - P1M1 and bit 6 - P1M0 to CCP1CON
+</DD></DT><br /><br />
+<DT>(<b>27623</b>)<DD>18F8722 family device support changes needed to match the data
+        sheet DS39646B.<br />
+<br />
+        All devices<br />
+        -----------<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Change CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+<br />
+        18F6527<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F6622<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F6627<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTBE to PORTE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F6722<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTBE to PORTE<br />
+<br />
+        18F8527<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTBE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F8622<br />
+        -------<br />
+        CONFIG3H - changed setting name PORTB to PORTBE<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings<br />
+<br />
+        18F8627<br />
+        -------<br />
+        CONFIG5L, CONFIG6L, CONFIG7L - corrected default settings
+</DD></DT><br /><br />
+<DT>(<b>27639</b>)<DD>18F8490 family device support changes needed to match the data
+        sheet DS39629B.<br />
+<br />
+        18F6390, 18F6490, 18F8390 and 18F8490<br />
+        -------------------------------------<br />
+        Removed EEIP from SFR IPR2 - unimplemented in data sheet<br />
+        Removed EEIE from SFR PIE2 - unimplemented in data sheet<br />
+        Removed EEIF from SFR PIR2 - unimplemented in data sheet<br />
+        Removed TUN5 from SFR OSCTUNE - unimplemented in data sheet<br />
+        Updated Configuration descriptions to match data sheet<br />
+        Changed CONFIG2L BORV settings to 3 (Minimum setting),
+            2, 1, and 0 (Maximum setting)<br />
+        CONFIG3H - corrected default settings<br />
+        Removed CONFIG7L it is not implemented in these devices
+</DD></DT><br /><br />
+<DT>(<b>27611</b>)<DD>16F946 device support changes needed to match the data
+        sheet DS41265A.<br />
+        Added ANSEL bits ANS0-ANS7<br />
+        Added SFRs EEADRH and EEADRL
+</DD></DT><br /><br />
+<DT>(<b>27627</b>)<DD>16F59 device support change needed to match the data
+        sheet DS41213A.<br />
+        Corrected MAXRAM to H'0FF'
+</DD></DT><br /><br />
+<DT>(<b>27628</b>)<DD>16F685 device support change needed to match the data
+        sheet DS41262A.<br />
+        Added PCON bit NOT_BOR
+</DD></DT><br /><br />
+<DT>(<b>27629</b>)<DD>16F917 family device support changes needed to match the data
+        sheet DS41250D.<br />
+        Added ANSEL bits ANS0-ANS7<br />
+        Added SFR EEADRH and EEADRL
+</DD></DT><br /><br />
+<DT>(<b>27645</b>)<DD>10F206 family device support changes needed to match the data
+        sheet DS41239B.<br />
+        Added comment to the configuration word setting _IntRC_OSC
+        that it is for backward compatibility only.
+</DD></DT><br /><br />
+<DT>(<b>27665</b>)<DD>MPASM appeared to assemble code past the end of memory
+        for 10F222. Corrected the memory size of 10F222 from
+        0x3FF to 0x1FF and memory size of 10F220 from 0x1FF to 0xFF.
+</DD></DT><br /><br />
+<DT>(<b>23454</b>)<DD>In MPLAB IDE, the disassembly window now shows macro
+        definitions along with code.
+</DD></DT><br /><br />
+<DT>(<b>27721</b>)<DD>The EECON2 register was shown to be included in the bad ram
+        location in the include file for 16F946.
+</DD></DT><br /><br />
+</DL>
+</UL>
+</span>
+<LI class="Heading0"><h1><A NAME="KnownProblems">Known Problems</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<p>
+The following is a list of known problems. For a list of
+limitations, please see MPASM Assembler Help, Troubleshooting,
+Assembler Limitations.</p>
+<DL>
+<DT>(<b>1008</b>)<DD>There are no warnings when overflow or underflow occurs
+during expression evaluation.
+</DT><br /><br />
+<DT>(<b>16921 / 23355</b>)<DD>MPASM Assembler generates a COD file which cannot
+handle line number information for program memory addresses
+greater than 64K. This adversely affects debugging.<br />
+The workaround is to generate a .O file, link with MPLINK
+Linker, and debug in MPLAB IDE v6.0 or greater.<br />
+Here is an example of what might happen. Suppose the source is
+<pre>
+        ORG 0xF00000
+        DB 0xAB ; eedata
+        ORG 0x0
+        MOVLW 3
+        MOVLW 4
+</pre>
+The disassembly window in MPLAB IDE may appear this way:
+<pre>
+        Disassembly               Source
+                                  ORG 0xF00000
+        000000 0E03 MOVLW 3       DB 0xAB
+                                  ORG 0x0
+                                  MOVLW 3
+        000000 0E04 MOVLW 4       MOVLW 4
+</pre>
+The source line for address 0xF00000 has been associated with
+the code at address 0x0.
+</DT><br /><br />
+<DT>(<b>17236</b>)<DD>Using a symbol other than one introduced by the DEFINE
+directive as the operand of an IFDEF or IFNDEF directive
+causes the IFDEF/IFNDEF to possibly be evaluated incorrectly.
+</DT><br /><br />
+<DT>(<b>18510</b>)<DD>A file register operand which is greater than the absolute max
+ram address does not generate a message of any kind.<br />
+For example,
+<pre>
+        LIST P=18F452
+        MOVWF 0x1000
+        END
+</pre>
+will assemble without warning.
+</DT><br /><br />
+<DT>(<b>18811</b>)<DD>MPASMWIN generates incorrect code for 'goto' targeting a
+local label.<br />
+A 'goto' targeting a local label is generating an instruction
+where the file register field is set to 0 instead of the local
+label's value.<br />
+The workaround is to use the "$ + n" expression as the target
+of the 'goto'.
+</DT><br /><br />
+<DT>(<b>19703</b>)<DD>The Japanese directory delimiter character on Windows XP-J and
+Windows ME-J is not accepted by MPASM.<br />
+The workaround is to invoke MPASM on the command line with
+a source file path which does not contain any directory
+delimiters.
+</DT><br /><br />
+<DT>(<b>19788</b>)<DD>MPASM.EXE has problems accepting a file name which contains
+a space just before the '.' character of the extension.
+For example,
+<pre>
+        MPASM.EXE /Q "TEST .ASM"
+</pre>
+will cause a 'file not found' error, but for MPASMWIN.EXE, this
+is acceptable.
+</DT><br /><br />
+<DT>(<b>20776</b>)<DD>The return value of the MPASMWIN.EXE process (returned by
+'spawnvp') does not get stored in the DOS environment variable
+ERRORLEVEL.
+</DT><br /><br />
+<DT>(<b>20986</b>)<DD>When assembling with the '/o' option,
+a duplicate address label declaration causes no error, warning,
+or message. For example, the program fragment
+<pre>
+        U1 IDATA
+        X  DB 1
+        U2 IDATA
+        X  DB 2
+            CODE
+           MOVWF X
+</pre>
+assembles quietly, but the definition of X which is used in the
+MOVWF instruction is not well defined.
+</DT><br /><br />
+<DT>(<b>21677</b>)<DD>When using MPASM.EXE without the '/q' option, and an output
+file is specified to be in a nonexistent directory, then the
+output file is not generated, but no error message is emitted.<br />
+When the '/q' option is used, the message "Couldn't open
+file..." is emitted. This can be confusing.
+</DT><br /><br />
+<DT>(<b>21798</b>)<DD>The length of the command line argument string to mpasm.exe is
+limited to about 120 characters. Anything beyond that is
+truncated.
+</DT><br /><br />
+<DT>(<b>21988</b>)<DD>MPASM cannot handle a source file with UNIX-style line endings.
+Please convert line endings to the DOS (CR/LF) format.
+</DT><br /><br />
+<DT>(<b>22227</b>)<DD>Error messages are not emitted to standard out.
+</DT><br /><br />
+<DT>(<b>22387</b>)<DD>MPASM cannot assemble files in Unicode format.
+</DT><br /><br />
+<DT>(<b>22541</b>)<DD>A warning is not emitted if the operand for the PUSHL
+instruction is less than -128, only if it is less than -255.
+A warning should be emitted if the operand is less than -128,
+since the operand is 8 bits wide.
+</DT><br /><br />
+<DT>(<b>22660</b>)<DD>When assembling with '/o' and the operand of a DT directive is
+relocatable but more than 8 bits wide, the linker will fill
+both bytes of the directive with 16 bits of the operand
+(instead of truncating the operand to 8 bits for a RETLW
+instruction):
+<pre>
+        UDATA 0x124
+        X RES 1
+        CODE 0x100
+        DT X
+</pre>
+will generate 0x0124 at address 0x100 instead of 0x3424
+(RETLW 0x24).
+</DT><br /><br />
+<DT>(<b>23071</b>)<DD>The LIST n=nnn directive does not properly format the
+listing file.
+</DT><br /><br />
+<DT>(<b>23490</b>)<DD>As MPASM rescans macro expressions, it searches the substituted
+arguments for parameters. E.g.,
+<pre>
+        #define F(X,Y) X + Y
+        Y EQU 2
+        movlw F(Y,1)
+</pre>
+will yield movlw 2 instead of movlw 3. After Y is substituted
+in place of X, it is replaced itself by the second argument
+upon rescanning.
+</DT><br /><br />
+<DT>(<b>23747</b>)<DD>MAXROM is defined incorrectly for 17C43.<br />
+The following source code:
+<pre>
+        LIST p=17c43
+        ORG 0xFFE
+        NOP
+        ....
+        ORG 0xFFFE
+        NOP
+        ....
+        END
+</pre>
+Should cause the assembler to emit warning[220] when the code
+crosses 0x1000. Instead the assembler emits a warning when the
+code crosses 0x10000.<br />
+Also note that "__maxrom 0xFFF" causes the assembler to emit
+the following error:<br />
+<code><br />
+Error[126] MAXROM.ASM 3 : Argument out of range (must be greater than or equal to 65535)<br />
+</code><br />
+As a workaround:
+<pre>
+        LIST p=17c43
+        __maxrom 0xFFFF
+        __badrom 0x1000 - 0xFFFF
+        ORG 0xFFE
+        NOP
+        ....
+        END
+</pre>
+Causes the assembler to emit "Invalid ROM location,"
+warning[228], when the code crosses 0x1000.
+</DT><br /><br />
+<DT>(<b>24275</b>)<DD>After a file is compiled, the debug information does not seem
+to be loaded.
+</DT><br /><br />
+<DT>(<b>24560</b>)<DD>No error or warning is produced for the following code:
+<pre>
+        bsf   ,1
+        END
+</pre>
+This assembles as if "bsf 0,1" was given.
+</DT><br /><br />
+<DT>(<b>24794</b>)<DD>MPASM generates invalid PIC18 relocation for $+&lt;odd offset&gt;.
+The following code, containing an invalid goto destination
+address, assembles without error when generating an object
+file (18f452):
+<pre>
+                      code 0
+                      bra start
+
+        startscn      code 0x100
+        start         nop
+                      goto $-1
+                      bra $
+
+                      end
+</pre>
+causing a link-time error:<br />
+<code><br />
+Error - file 'C:\test\mpasm\gotoneg1.o', section 'startscn', Symbol '_startscn_0102' is not word-aligned.<br />
+It can not be used as the target of a call or goto instruction.<br />
+</code><br />
+However, the assembler generates a warning when assembling
+equivalent code in absolute mode:
+<pre>
+                      org 0
+                      bra start
+
+                      org 0x100
+        start         nop
+                      goto $-1
+                      bra $
+
+                      end
+</pre><br /><code>
+Warning[226] C:\TEST\MPASM\GOTONEG1.ASM 8 : Destination address must be word aligned<br />
+</code><br />
+<DT>(<b>26223</b>)<DD>MPASM does not correctly handle Windows CLI and DOS command
+line string limitations and error diagnostics can be ambiguous
+or absent.
+</DT><br /><br />
+<DT>(<b>26588</b>)<DD>The Processor Type list in the MPASM.EXE GUI (DOS executable)
+doesn't display all of the processors. Many 16xxx and all 18xxx
+processors are not shown.<br />
+The workaround is to use the MPASMWIN.EXE GUI.
+</DT><br /><br />
+<DT>(<b>27088</b>)<DD>MPASM may generate an invalid COFF file when passing an
+undefined constant as a macro parameter.<br />
+For example:
+<pre>
+        RM          MACRO Name,Size
+                    LOCAL i    =0
+        Name        RES   0
+                    GLOBAL Name
+                    WHILE i &lt;Size
+        Name#v(i)     RES 1
+                      i +=1
+                    ENDW
+                    ENDM
+        myuscn      UDATA
+                    RM hello,myconstsz ; Should cause an assembly error
+        myconstsz  equ  2
+                    CODE
+                    lfsr  0,hello0
+                    END
+</pre>
+Assembly of this code causes only a warning, but MPLINK gives
+an error message "reloc[0] has an invalid r_symndx." while
+trying to link the COFF file.<br />
+MPASM should give an error.<br />
+To avoid this problem, the code should define 'myconstsz'
+before calling the macro, as shown:
+<pre>
+        myconstsz  equ 2
+        RM hello, myconstsz
+</pre>
+<DT>(<b>27165</b>)<DD>MPASM does not give an error when ENDIF is missing; it gives
+only a warning.<br />
+With a macro like:
+<pre>
+        IF (CONST)
+        ; no ENDIF
+</pre>
+MPASM assembles it and gives no error, only a warning.<br /><br />
+<DT>(<b>27914</b>)<DD>The assembler gives an error when the FILL macro is used with Address - $.
+For example, the following code:
+<pre>
+        #include &lt;p16f877a.inc&gt;
+
+        cfill code 0x7f
+        fill (clrf PCLATH), H'4FF'-$
+        end
+</pre>
+causes the assembler to give this error:
+<pre>
+        Operand contains unresolvable labels or is too complex
+</pre>
+<DT>(<b>28228</b>)<DD>Running the assembler on a file with a '.' in the name,
+other than the '.' separating the file extension from the base name, for example foo.bar.asm,
+results in a DOS error:
+<pre>
+        File not found.
+</pre>
+Any resulting intermediate or output files will not include the portion of the file name after the first '.'
+For example, the file name above may cause files named foo.ERR, foo.COD, or foo.LST to be created.<br /><br />
+</DL>
+</span>
+<LI class="Heading0"><h1><A NAME="UsingMPASM">Using MPASM Assembler</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<p>
+Create your source code with any text editor. The file should contain
+ASCII text only. Assemble your code with the command line:</p>
+<pre>
+        mpasm &lt;file&gt;[.asm]
+</pre>
+A version of MPASM Assembler is also available for Windows. To invoke
+this assembler, execute:
+<pre>
+        mpasmwin
+</pre>
+from within Windows. You will then be given a Windows interface window.
+Help on using the interface is provided on-line. MPASMWIN.EXE can also
+be invoked with parameters or through drag-and-drop. In these cases,
+the interface screen is not displayed and assembly begins immediately.
+<p>
+Correct any syntax problems, referring to the MPASM Assembler, MPLINK
+Object Linker, MPLIB Object Librarian User's Guide(DS33014) for
+syntax help. MPASM assembles with INHX32 as the default hex output, and
+generates a listing file, error file, and .COD file.
+</p>
+<b>Serial EEPROM Support:</b><p>
+<p>
+Two "processor" selections are provided to generate byte data - EEPROM8
+and EEPROM16. Both generate data in terms of bytes, but EEPROM8
+considers a "word" to be 8 bits wide, while EEPROM16 considers a "word"
+to be 16 bits wide. The "program counter" is always incremented in
+terms of bytes.</p>
+<p>
+The default size for memory products is 128 bytes. This can be
+overridden by using the LIST M=&lt;max address&gt; directive. Note that
+&lt;max address&gt; is always evaluated as a decimal number. The header file
+MEMORY.INC is provided to define the maximum address for available
+memory devices. The format of the defined symbols is _&lt;device&gt;; for
+example, to set the maximum memory size for a 24LCS21, use the
+directive LIST M=_24LCS21.</p>
+<p>
+The following data generation directives are supported for
+memory products:<pre>
+        DW           FILL        ORG
+</pre>
+The behavior of other data generation directives is not guaranteed.
+All other directives are unchanged.</p>
+<p>
+An example of generating a file for programming a memory device is
+as follows:</p>
+<pre>
+;*************************************************
+; Generate data for a 8-bit wide memory device.
+
+        LIST    P=EEPROM8, R=DECIMAL
+        INCLUDE "MEMORY.INC"
+        LIST    M=_24LCS21
+
+#DEFINE MAX_VALUE       255
+
+        ORG     0
+
+;-------------------------------------------------
+; Create a packed-byte, null terminated string.
+
+        DW      "Hello World", 0
+
+;-------------------------------------------------
+; Create data representing a line.  The X position
+; is implied from the position of the data in the
+; device.  The Y values are stored in the device.
+
+; First, define an equation for the line.
+
+#DEFINE Line( X )       Slope * X + Y_Intercept
+
+; Now define the values needed for the equation.
+
+Slope                   EQU     10
+Y_Intercept             EQU     5
+
+; Declare and initialize the X and Y values.
+
+        VARIABLE        X = 0, Y = Line( X )
+
+; Generate values until the maximum Y value is
+; reached or the device is filled up.
+
+        WHILE (Y &lt;= MAX_VALUE) &amp;&amp; ($ &lt;= _24LCS21)
+           DW   Y
+X = X + 1
+Y = Line( X )
+        ENDW
+
+;-------------------------------------------------
+; Perform some checking based on the line data
+; generated above.
+
+; If the device filled up before the end of the
+; line was reached, generate an error. Otherwise,
+; if the device is almost out of room, generate a
+; message.
+
+        IF (Y &lt; MAX_VALUE)
+           ERROR        "Device is full."
+        ELSE
+           IF (($+10) &gt; _24LCS21)
+              MESSG     "Device is nearly full."
+           ENDIF
+        ENDIF
+
+;-------------------------------------------------
+; Fill the rest of the device with zeroes.
+
+        FILL    0, _24LCS21 - $ + 1
+
+        END
+</pre>
+<b>CLRW COMMAND:</b><p>
+The CLRW encoding was changed on all 14-bit core devices from 0x0100
+to 0x0103 (v1.40 and later). This will not affect the expected
+operation of the instruction, but it will change the value for the
+instruction in the hex file and therefore the checksum.</p>
+<b>WARNING MESSAGE:</b><p>
+The text for Message #302 was modified to explain more clearly that
+bank indication bits are stripped when assembling instructions that
+access file registers. The appropriate bank must be selected by the
+appropriate bank selection bits. For example, 14-bit core devices
+contain the lower seven bits of the file register address in the
+opcode, with two bank selection bits in the STATUS register. The
+message was changed from:</p>
+<pre>
+        Argument out of range. Least significant bits used.
+</pre>to:<pre>
+        Register in operand not in bank 0. Ensure that bank bits are correct.
+</pre>
+<b>END DIRECTIVE:</b><p>
+Take care to not use the END directive in a macro. If the END directive
+is encountered in a macro, it can cause the assembler to loop
+indefinitely. Macros should be terminated with the ENDM directive.</p>
+<LI class="Heading0"><h1><A NAME="Support">Customer Support</A></h1></LI>
+<span style="font-size:10pt;font-weight:normal;">
+<br />
+Microchip provides online support via our home page at:<br />
+<A HREF="http://www.microchip.com">http://www.microchip.com</A><br />
+<br />
+Technical support is available through the web site at:<br />
+<A HREF="http://support.microchip.com">http://support.microchip.com</A><br />
+<br />
+A forum for discussion of Microchip products and tools is
+available at:<br />
+<A HREF="http://forum.microchip.com">http://forum.microchip.com</A><br />
+</span>
+</OL>
+</span>
+</body>
+</html>

@@ -1,0 +1,17 @@
+/* $Id:  */
+#include <p18cxxx.h>
+#include <spi.h>
+
+/********************************************************************
+*     Function Name:    CloseSPI1                                   *
+*     Return Value:     void                                        *
+*     Parameters:       void                                        *
+*     Description:      This function disables the SSPa module. Pin *
+*                       I/O returns under the control of the port   *
+*                       registers.                                  *
+********************************************************************/
+#undef CloseSPI1
+void CloseSPI1( void )
+{
+  SSP1CON1 &= 0xDF;               // disable synchronous serial port
+}

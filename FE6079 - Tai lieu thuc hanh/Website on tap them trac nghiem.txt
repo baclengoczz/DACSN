@@ -1,0 +1,32 @@
+http://gaia.cs.umass.edu/kurose_ross/knowledgechecks/
+
+Chủ đề ôn tập:
+CHƯƠNG 1: GIỚI THIỆU
+1. Internet là gì?
+2. Biên mạng
+3. Lõi mạng
+4. Hiệu suất: Độ trễ, mất mát và thông lượng trong mạng máy tính
+5. Các lớp giao thức và Mô hình dịch vụ
+
+CHƯƠNG 2: LỚP ỨNG DỤNG
+1. Nguyên tắc ứng dụng mạng
+2. Web và HTTP
+3. Email
+4. Dịch vụ tên miền: DNS
+
+CHƯƠNG 3: LỚP VẬN CHUYỂN
+1. Giới thiệu và Dịch vụ tầng giao vận
+2. Ghép kênh và tách kênh
+
+CHƯƠNG 4: LỚP MẠNG: MẶT DỮ LIỆU
+1. Tổng quan về lớp mạng
+2. Bên trong bộ định tuyến có gì?
+3. Giao thức Internet
+
+CHƯƠNG 5: LỚP MẠNG: MẶT ĐIỀU KHIỂN
+1. Giới thiệu về mặt điều khiển lớp mạng
+2. Thuật toán định tuyến
+
+CHƯƠNG 6: LỚP LIÊN KẾT
+1. Giới thiệu về Lớp liên kết
+4. Mạng cục bộ - chuyển mạch

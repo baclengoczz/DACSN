@@ -1,0 +1,77 @@
+# Generated automatically from Makefile.in by configure.
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# Makefile for popt library.
+
+include_HEADERS = popt.h
+lib_LIBRARIES = libpopt.a
+libpopt_a_SOURCES = popt.c findme.c poptparse.c poptconfig.c popthelp.c
+
+libpopt_a_LIBADD = 
+libpopt_a_OBJECTS =  popt.$(OBJEXT) findme.$(OBJEXT) poptparse.$(OBJEXT) \
+poptconfig.$(OBJEXT) popthelp.$(OBJEXT)
+CC = gcc
+AR = ar
+RANLIB = ranlib
+OBJEXT = o
+DEFS = -DHAVE_CONFIG_H -I.
+CFLAGS = -DMICROCHIP -DCASE_INSENSITIVE -Wall -O2
+COMPILE = $(CC) $(DEFS) $(CFLAGS)
+
+
+all: create-directories libpopt.a
+.SUFFIXES:
+.SUFFIXES: .S .c .lo .o .obj .s
+
+clean:
+	-test -z "$(lib_LIBRARIES)" || rm -f $(lib_LIBRARIES)
+	rm -f $(libpopt_a_OBJECTS)
+
+# FIXME: We should only use cygpath when building on Windows,
+# and only if it is available.
+.c.obj:
+	$(COMPILE) -c `cygpath -w $<`
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+%.o: %.c
+	@echo '$(COMPILE) -c $<'; \
+	$(COMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-cp .deps/$(*F).pp .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm .deps/$(*F).pp
+
+%.lo: %.c
+	@echo '$(LTCOMPILE) -c $<'; \
+	$(LTCOMPILE) -Wp,-MD,.deps/$(*F).pp -c $<
+	@-sed -e 's/^\([^:]*\)\.o[ 	]*:/\1.lo \1.o :/' \
+	  < .deps/$(*F).pp > .deps/$(*F).P; \
+	tr ' ' '\012' < .deps/$(*F).pp \
+	  | sed -e 's/^\\$$//' -e '/^$$/ d' -e '/:$$/ d' -e 's/$$/ :/' \
+	    >> .deps/$(*F).P; \
+	rm -f .deps/$(*F).pp
+
+libpopt.a: $(libpopt_a_OBJECTS) $(libpopt_a_DEPENDENCIES)
+	-rm -f libpopt.a
+	$(AR) cru libpopt.a $(libpopt_a_OBJECTS) $(libpopt_a_LIBADD)
+	$(RANLIB) libpopt.a
+
+.PHONY: create-directories
+create-directories:
+	-test -d .deps || mkdir .deps
